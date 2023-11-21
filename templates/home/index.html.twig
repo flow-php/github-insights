@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+    <h1>Organizations</h1>
+    <ul>
+        {% for org in orgs %}
+            <li>
+                <a href="{{ path('app_org', { 'org': org }) }}">
+                    {{ org }}
+                </a>
+            </li>
+        {% else %}
+            <li>There is no data available yet</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

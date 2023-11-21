@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PRController!{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+    <h1>Insights - {{ org }}/{{ repo }}</h1>
+    <p>
+        <a href="{{ path("app_org", {org: org}) }}">Back</a>
+    </p>
+
+    <h2>Daily Contributions</h2>
+    <ul>
+        {% for report in reports %}
+        <li>
+            Download: <a href="{{ path('app_pr_report', {org: org, repo: repo, year: report}) }}">{{ report }}.csv</a>
+        </li>
+        {% else %}
+        <li>There are no reports yet for given repository.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

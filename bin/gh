@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+use App\Command\PullRequest\AggregateCommand;
+use App\Command\PullRequest\FetchCommand;
+use App\Kernel;
+use Symfony\Component\Console\Application;
+
+if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+}
+
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+
+return function (array $context) {
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    $kernel->boot();
+
+    $app = new Application("GitHub Insights");
+    $app->add(new FetchCommand(
+        $kernel->getContainer()->getParameter('gh.token'),
+        $kernel->getContainer()->getParameter('data.warehouse.dir'))
+    );
+    $app->add(new AggregateCommand(
+        $kernel->getContainer()->getParameter('data.warehouse.dir'))
+    );
+
+    return $app;
+};
