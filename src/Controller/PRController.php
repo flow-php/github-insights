@@ -15,21 +15,38 @@ class PRController extends AbstractController
     {
         $reportsPath = $this->getParameter('data.warehouse.dir') . '/' . $org . '/' . $repo . "/report";
 
-        $reports = [];
+        $years = [];
         if (\file_exists($reportsPath)) {
             foreach (\scandir($reportsPath) as $file) {
                 if (\in_array($file, ['.', '..'], true)) {
                     continue;
                 }
 
-                $reports[] = $file;
+                $years[] = $file;
             }
         }
 
         return $this->render('pr/index.html.twig', [
             'org' => $org,
             'repo' => $repo,
-            'reports' => $reports,
+            'years' => $years,
+        ]);
+    }
+
+    #[Route('/pr/{org}/{repo}/chart/{year}', name: 'app_pr_chart')]
+    public function chart(string $org, string $repo, int $year) : Response
+    {
+        $chartConfigPath = $this->getParameter('data.warehouse.dir') . '/' . $org . '/' . $repo . "/report/" . $year . "/daily_contributions.chart.json";
+
+        if (!\file_exists($chartConfigPath)) {
+            throw $this->createNotFoundException('The report does not exist');
+        }
+
+        return $this->render('pr/chart.html.twig', [
+            'org' => $org,
+            'repo' => $repo,
+            'year' => $year,
+            'chart_config' => \file_get_contents($chartConfigPath),
         ]);
     }
 

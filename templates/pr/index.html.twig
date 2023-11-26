@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PRController!{% endblock %}
+{% block title %}Daily Pull Requests - {{ org }}/{{ repo }}{% endblock %}
 
 {% block body %}
 
 <div class="wrapper">
-    <h1>Insights - {{ org }}/{{ repo }}</h1>
+    <h1>{{ org }}/{{ repo }} - Insights</h1>
     <p>
         <a href="{{ path("app_org", {org: org}) }}">Back</a>
     </p>
 
-    <h2>Daily Contributions</h2>
+    <h2>Daily Pull Requests</h2>
     <ul>
-        {% for report in reports %}
+        {% for year in years %}
         <li>
-            Download: <a href="{{ path('app_pr_report', {org: org, repo: repo, year: report}) }}">{{ report }}.csv</a>
+            <a href="{{ path('app_pr_chart', {org: org, repo: repo, year: year}) }}">{{ year }}</a>
         </li>
         {% else %}
         <li>There are no reports yet for given repository.</li>

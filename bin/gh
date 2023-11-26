@@ -4,6 +4,7 @@
 use App\Command\PullRequest\AggregateCommand;
 use App\Command\PullRequest\FetchCommand;
 use App\Kernel;
+use Flow\ETL\Config;
 use Symfony\Component\Console\Application;
 
 if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
@@ -16,13 +17,24 @@ return function (array $context) {
     $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
     $kernel->boot();
 
+    if (!\file_exists($kernel->getCacheDir() . '/flow-php')) {
+        \mkdir($kernel->getCacheDir() . '/flow-php', recursive: true);
+    }
+
+    putenv(Config::CACHE_DIR_ENV . '='.$kernel->getCacheDir() . '/flow-php');
+
     $app = new Application("GitHub Insights");
-    $app->add(new FetchCommand(
-        $kernel->getContainer()->getParameter('gh.token'),
-        $kernel->getContainer()->getParameter('data.warehouse.dir'))
+    $app->add(
+        new FetchCommand(
+            $kernel->getContainer()->getParameter('gh.token'),
+            $kernel->getContainer()->getParameter('data.warehouse.dir'),
+        )
     );
-    $app->add(new AggregateCommand(
-        $kernel->getContainer()->getParameter('data.warehouse.dir'))
+    $app->add(
+        new AggregateCommand(
+            $kernel->getContainer()->getParameter('data.warehouse.dir'),
+            $kernel->getContainer()->getParameter('kernel.project_dir').'/templates',
+        )
     );
 
     return $app;

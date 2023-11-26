@@ -5,7 +5,6 @@ namespace App\Command\PullRequest;
 use App\Factory\GithubRequestFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\DSL\Json;
-use Flow\ETL\DSL\Parquet;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Flow;
 use Http\Client\Curl\Client;
@@ -28,7 +27,7 @@ class FetchCommand extends Command
 {
     public function __construct(
         private readonly string $token,
-        private readonly string $warehousePath
+        private readonly string $warehousePath,
     ) {
         if ('' === $token) {
             throw new \InvalidArgumentException('GitHub API Token must be provided.');
@@ -46,7 +45,8 @@ class FetchCommand extends Command
         $this
             ->addArgument('org', InputArgument::REQUIRED)
             ->addArgument('repository', InputArgument::REQUIRED)
-            ->addOption('after_date', null, InputArgument::OPTIONAL, 'Fetch pull requests created after given date', '-24 hours');
+            ->addOption('after_date', null, InputArgument::OPTIONAL, 'Fetch pull requests created after given date', '-24 hours')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -85,23 +85,20 @@ class FetchCommand extends Command
             ->withEntry('data', ref('data')->unpack())
             ->renameAll('data.', '')
             ->drop('unpacked', 'data')
-
             // Unify key for partitioning
-            ->select('created_at', 'user')
             ->withEntry('date_utc', ref('created_at')->toDateTime(\DATE_ATOM)->dateFormat())
-
+            // stop fetching data after given date
             ->until(ref('created_at')->toDateTime(\DATE_ATOM)->greaterThanEqual(lit($afterData)))
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(Parquet::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr"))
-
+            ->write(Json::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr"))
             // Execute
             ->run();
 
         $stopwatch->stop($this->getName());
 
-        $io->success('Done in '.$stopwatch->getEvent($this->getName())->getDuration().'ms');
+        $io->success('Done in '. \number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2) .'s');
 
         return Command::SUCCESS;
     }

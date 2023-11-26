@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Daily Pull Requests - {{ org }}/{{ repo }} - {{ year }}{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script>
+        window.onload = function () {
+            new Chart(document.getElementById('chart'),JSON.parse({{ chart_config|json_encode|raw }}));
+        };
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <h1>{{ org }}/{{ repo }} - Insights</h1>
+    <p>
+        <a href="{{ path("app_pr", {org: org, repo: repo}) }}">Back</a>
+    </p>
+
+    <h2>Daily Pull Requests</h2>
+    <a href="{{ path('app_pr_report', {org: org, repo: repo, year: year}) }}">Download CSV</a>
+    <div style="width: 100%;">
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+{% endblock %}

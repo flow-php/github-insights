@@ -23,24 +23,24 @@ when PR was created.
 This can be done by running: 
 
 ```shell
-bin/gh pr:fetch symfony symfony --after_date="2019-01-01"
+bin/gh pr:fetch flow-php flow --after_date="2023-01-01"
 ```
 
 Once data is stored in local Data Warehouse, it can be aggregated and displayed in a form of a report. 
 
 ```shell
-bin/gh pr:aggregate symfony symfony --year=2021
-bin/gh pr:aggregate symfony symfony --year=2022
-bin/gh pr:aggregate symfony symfony --year=2023
+bin/gh pr:aggregate flow-php flow --year=2023
 ```
 
 This will generate yearly report for given org/repository and year. 
 
 ```
-var/data/warehouse/dev/flow-php/flow/report/2021/daily_contributions.csv
-var/data/warehouse/dev/flow-php/flow/report/2022/daily_contributions.csv
+var/data/warehouse/dev/flow-php/flow/report/2023/daily_contributions.chart.json
 var/data/warehouse/dev/flow-php/flow/report/2023/daily_contributions.csv
+var/data/warehouse/dev/flow-php/flow/report/2023/top_10_contributions.csv
 ```
+
+Example of Daily Contributions Report:
 
 ```CSV
 date_utc,user,contributions

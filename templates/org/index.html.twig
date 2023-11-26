@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrgController!{% endblock %}
+{% block title %}Organization - {{ org }}{% endblock %}
 
 {% block body %}
 
 <div class="wrapper">
-    <h1>Organization - {{ org }}</h1>
+    <h1>{{ org }}</h1>
     <a href="{{ path("app_home") }}">Back</a>
-    <h2>Repositories:</h2>
+    <h4>Repositories:</h4>
     <ul>
         {% for repo in repos %}
             <li>
