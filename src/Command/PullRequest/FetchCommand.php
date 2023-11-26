@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function Flow\ETL\DSL\lit;
 use function Flow\ETL\DSL\ref;
 
@@ -98,7 +99,7 @@ class FetchCommand extends Command
 
         $stopwatch->stop($this->getName());
 
-        $io->success('Done in '. \number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2) .'s');
+        $io->success('Done in '.\number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2).'s');
 
         return Command::SUCCESS;
     }

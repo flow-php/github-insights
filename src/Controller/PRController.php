@@ -13,7 +13,7 @@ class PRController extends AbstractController
     #[Route('/pr/{org}/{repo}', name: 'app_pr')]
     public function index(string $org, string $repo): Response
     {
-        $reportsPath = $this->getParameter('data.warehouse.dir') . '/' . $org . '/' . $repo . "/report";
+        $reportsPath = $this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report';
 
         $years = [];
         if (\file_exists($reportsPath)) {
@@ -34,9 +34,9 @@ class PRController extends AbstractController
     }
 
     #[Route('/pr/{org}/{repo}/chart/{year}', name: 'app_pr_chart')]
-    public function chart(string $org, string $repo, int $year) : Response
+    public function chart(string $org, string $repo, int $year): Response
     {
-        $chartConfigPath = $this->getParameter('data.warehouse.dir') . '/' . $org . '/' . $repo . "/report/" . $year . "/daily_contributions.chart.json";
+        $chartConfigPath = $this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report/'.$year.'/daily_contributions.chart.json';
 
         if (!\file_exists($chartConfigPath)) {
             throw $this->createNotFoundException('The report does not exist');
@@ -51,9 +51,9 @@ class PRController extends AbstractController
     }
 
     #[Route('/pr/{org}/{repo}/report/{year}', name: 'app_pr_report')]
-    public function report(string $org, string $repo, int $year) : Response
+    public function report(string $org, string $repo, int $year): Response
     {
-        $report = $this->getParameter('data.warehouse.dir') . '/' . $org . '/' . $repo . "/report/" . $year . "/daily_contributions.csv";
+        $report = $this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report/'.$year.'/daily_contributions.csv';
 
         if (!\file_exists($report)) {
             throw $this->createNotFoundException('The report does not exist');
@@ -63,7 +63,7 @@ class PRController extends AbstractController
         $response->headers->set('Content-Type', 'text/csv');
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $org . '_' . $repo . '_daily_contributions_' . $year . '.csv'
+            $org.'_'.$repo.'_daily_contributions_'.$year.'.csv'
         );
 
         return $response;

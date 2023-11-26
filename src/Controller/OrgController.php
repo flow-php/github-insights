@@ -12,7 +12,7 @@ class OrgController extends AbstractController
     public function index(string $org): Response
     {
         $repos = [];
-        foreach (\scandir($this->getParameter('data.warehouse.dir') . '/' . $org) as $file) {
+        foreach (\scandir($this->getParameter('data.warehouse.dir').'/'.$org) as $file) {
             if (\in_array($file, ['.', '..'], true)) {
                 continue;
             }
@@ -22,7 +22,7 @@ class OrgController extends AbstractController
 
         return $this->render('org/index.html.twig', [
             'org' => $org,
-            'repos' => $repos
+            'repos' => $repos,
         ]);
     }
 }
