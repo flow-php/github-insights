@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contributor - {{ login }} - {{ org }}/{{ repo }} - {{ year }}{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script>
+        window.onload = function () {
+            new Chart(document.getElementById('chart'),{{ chart_data|json_encode|raw }});
+        };
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="wrapper">
+        <h1>{{ login }} - {{ org }}/{{ repo }} - {{ year }}</h1>
+        <p>
+            <a href="{{ path("app_repo_year", {org: org, repo: repo, year: year}) }}">Back</a>
+        </p>
+
+        <h2>{{ login }}</h2>
+        <h3>Rank: {{ contributor.rank }}</h3>
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="{{ contributor.user_avatar }}" alt="{{ login }} - avatar" width="100" height="100" />
+                        </td>
+                        <td style="vertical-align: top;padding-left: 10px;">
+                            <strong>GitHub Profile: <a href="https://github.com/{{ login }}" target="_blank">@{{ login }}</a></strong><br/>
+                            <strong>Total Changes:</strong> 🟠 {{ contributor.contribution_changes_total }}<br/>
+                            <strong>Additions:</strong> 🟢 {{ contributor.contribution_changes_additions }}<br/>
+                            <strong>Deletions:</strong> 🔴 {{ contributor.contribution_changes_deletions }}<br/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Daily Contributions</h2>
+        <div style="width: 100%;">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+{% endblock %}

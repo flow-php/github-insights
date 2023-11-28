@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Command\PullRequest;
+namespace App\Command\Aggregate;
 
+use App\Dataset\Contributions\Transformations\Contributions;
 use Flow\ETL\DSL\ChartJS;
 use Flow\ETL\DSL\CSV;
 use Flow\ETL\DSL\Entry;
@@ -11,8 +12,6 @@ use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Flow;
 use Flow\ETL\Join\Expression;
-use Flow\ETL\Partition;
-use Flow\ETL\Partition\CallableFilter;
 use Flow\ETL\Row;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use function Flow\ETL\DSL\count;
+use function Flow\ETL\DSL\first;
 use function Flow\ETL\DSL\lit;
 use function Flow\ETL\DSL\rank;
 use function Flow\ETL\DSL\ref;
@@ -31,10 +30,10 @@ use function Flow\ETL\DSL\sum;
 use function Flow\ETL\DSL\window;
 
 #[AsCommand(
-    name: 'pr:aggregate',
-    description: 'Aggregate pull requests data from data warehouse',
+    name: 'aggregate:contributions',
+    description: 'Aggregate contributions from PRs and Commits stored in data warehouse',
 )]
-final class AggregateCommand extends Command
+final class ContributionsCommand extends Command
 {
     public function __construct(
         private readonly string $warehousePath,
@@ -52,7 +51,7 @@ final class AggregateCommand extends Command
         $this
             ->addArgument('org', InputArgument::REQUIRED)
             ->addArgument('repository', InputArgument::REQUIRED)
-            ->addOption('year', 'y', InputArgument::OPTIONAL, 'Year to aggregate', date('Y'));
+            ->addOption('year', 'y', InputArgument::OPTIONAL, 'Year to aggregate', (int) date('Y'));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,93 +63,77 @@ final class AggregateCommand extends Command
 
         $org = $input->getArgument('org');
         $repository = $input->getArgument('repository');
-        $year = $input->getOption('year');
-        $yearStart = new \DateTimeImmutable($input->getOption('year').'-01-01 00:00:00');
-        $yearEnd = new \DateTimeImmutable($input->getOption('year').'-12-31 23:59:59');
+        $year = (int) $input->getOption('year');
 
-        $io->note("Aggregating contributions from {$org}/{$repository} for {$year} year");
+        $io->note("Aggregating contributions to {$org}/{$repository} for {$year} year");
 
-        // Find out top 10 contributors, those contributors will be displayed in the chart
-        // remaining contributors are going to be grouped into "others" group
+        // Create a list of top contributors
         (new Flow())
             ->read(Json::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr/date_utc=*/*"))
-            ->filterPartitions(
-                new CallableFilter(
-                    fn (Partition $partition) => new \DateTimeImmutable($partition->value) >= $yearStart && new \DateTimeImmutable($partition->value) <= $yearEnd
-                )
+            ->transform(new Contributions($year, $org, $repository, $this->warehousePath))
+            ->groupBy(ref('user_login'))
+            ->aggregate(
+                sum(ref('contribution_changes_total')),
+                sum(ref('contribution_changes_additions')),
+                sum(ref('contribution_changes_deletions')),
+                first(ref('user_avatar')),
             )
-            // Select unique data
-            ->withEntry('user', ref('user')->arrayGet('login'))
-            ->select('date_utc', 'user')
-            // Remove bots from report
-            ->filter(ref('user')->notEquals(lit('dependabot[bot]')))
-            ->filter(ref('user')->notEquals(lit('ghost')))
-            ->groupBy(ref('date_utc'), ref('user'))
-            ->aggregate(count(ref('user')))
-            ->rename('user_count', 'contributions')
-            ->drop('date_utc')
-            ->groupBy(ref('user'))
-            ->aggregate(sum(ref('contributions')))
-            ->rename('contributions_sum', 'contributions')
-            ->sortBy(ref('contributions')->desc())
-            // Calculate rank for each user based on contributions
-            ->withEntry('rank', rank()->over(window()->orderBy(ref('contributions')->desc())))
-            // Limit to top 10 contributors
-            ->limit(10)
+            ->rename('contribution_changes_total_sum', 'contribution_changes_total')
+            ->rename('contribution_changes_additions_sum', 'contribution_changes_additions')
+            ->rename('contribution_changes_deletions_sum', 'contribution_changes_deletions')
+            ->withEntry('rank', rank()->over(window()->orderBy(ref('contribution_changes_total')->desc())))
             ->mode(SaveMode::Overwrite)
-            ->write(CSV::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_10_contributions.csv'))
+            ->write(CSV::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
             ->run();
 
-        // Create daily contributions dataset
+        // Create daily contributions dataset merged with ranks from top contributors
         (new Flow())
             ->read(Json::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr/date_utc=*/*"))
-            ->filterPartitions(
-                new CallableFilter(
-                    fn (Partition $partition) => new \DateTimeImmutable($partition->value) >= $yearStart && new \DateTimeImmutable($partition->value) <= $yearEnd
-                )
+            ->transform(new Contributions($year, $org, $repository, $this->warehousePath))
+            ->groupBy(ref('date_utc'), ref('user_login'))
+            ->aggregate(
+                sum(ref('contribution_changes_total')),
+                sum(ref('contribution_changes_additions')),
+                sum(ref('contribution_changes_deletions')),
+                first(ref('user_avatar')),
             )
-            // Select unique data
-            ->withEntry('user', ref('user')->arrayGet('login'))
-            ->select('date_utc', 'user')
-
-            // Remove bots from report
-            ->filter(ref('user')->notEquals(lit('dependabot[bot]')))
-            ->filter(ref('user')->notEquals(lit('ghost')))
-            ->groupBy(ref('date_utc'), ref('user'))
-            ->aggregate(count(ref('user')))
-            ->rename('user_count', 'contributions')
-            ->sortBy(ref('date_utc')->desc(), ref('contributions')->desc())
+            ->rename('contribution_changes_total_sum', 'contribution_changes_total')
+            ->rename('contribution_changes_additions_sum', 'contribution_changes_additions')
+            ->rename('contribution_changes_deletions_sum', 'contribution_changes_deletions')
+            ->sortBy(ref('date_utc')->asc(), ref('contribution_changes_total')->desc())
             ->join(
                 (new Flow())
-                    ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_10_contributions.csv'))
-                    ->drop('contributions'),
-                Expression::on(['user' => 'user'], 'top_contributor_'),
+                    ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
+                    ->select('user_login', 'rank'),
+                Expression::on(['user_login' => 'user_login'], 'top_contributor_'),
             )
             ->mode(SaveMode::Overwrite)
             ->write(CSV::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
             ->run();
 
-        // Create daily contributions chart with top 10 contributors and remaining contributors groupped into "other_contributions" group
+        // Create daily contributions chart with top 10 contributors and remaining contributors grouped into "other_contributions" group
         (new Flow())
             ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
             ->collect()
-            ->filter(ref('top_contributor_rank')->isNotNull())
+            ->select('date_utc', 'user_login', 'contribution_changes_total', 'top_contributor_rank')
+            ->filter(ref('top_contributor_rank')->lessThanEqual(lit(10)))
             ->groupBy(ref('date_utc'))
-            ->pivot(ref('user'))
-            ->aggregate(sum(ref('contributions')))
+            ->pivot(ref('user_login'))
+            ->aggregate(sum(ref('contribution_changes_total')))
             ->join(
                 (new Flow())
                     ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
                     ->collect()
-                    ->filter(ref('top_contributor_rank')->isNull())
+                    ->filter(ref('top_contributor_rank')->greaterThan(lit(10)))
                     ->groupBy(ref('date_utc'))
-                    ->aggregate(sum(ref('contributions')))
-                    ->rename('contributions_sum', 'contributions'),
+                    ->aggregate(sum(ref('contribution_changes_total')))
+                    ->rename('contribution_changes_total_sum', 'contributions'),
                 Expression::on(['date_utc' => 'date_utc'], 'other_'),
             )
             ->map(function (Row $row): Row {
                 return $row->map(fn (Row\Entry $e) => null === $e->value() ? Entry::int($e->name(), 0) : $e);
             })
+            ->sortBy(ref('date_utc')->asc())
             ->collectRefs($users = refs())
             ->write(
                 ChartJS::to_file(

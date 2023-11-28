@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Command\PullRequest;
+namespace App\Command\Fetch;
 
-use App\Factory\GithubRequestFactory;
+use App\Factory\GitHub\PullRequestsFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
@@ -21,10 +21,11 @@ use function Flow\ETL\DSL\lit;
 use function Flow\ETL\DSL\ref;
 
 #[AsCommand(
-    name: 'pr:fetch',
-    description: 'Fetch github pull requests to data warehouse',
+    name: 'fetch:pr',
+    aliases: ['fetch:pull-requests', 'fetch:prs'],
+    description: 'Fetch GitHub pull requests to data warehouse',
 )]
-class FetchCommand extends Command
+class PullRequestsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
@@ -46,7 +47,7 @@ class FetchCommand extends Command
         $this
             ->addArgument('org', InputArgument::REQUIRED)
             ->addArgument('repository', InputArgument::REQUIRED)
-            ->addOption('after_date', null, InputArgument::OPTIONAL, 'Fetch pull requests created after given date', '-24 hours')
+            ->addOption('after_date', null, InputArgument::OPTIONAL, 'Fetch pull requests created after given date', '-5 days')
         ;
     }
 
@@ -75,7 +76,7 @@ class FetchCommand extends Command
             ->read(
                 new PsrHttpClientDynamicExtractor(
                     $client,
-                    new GithubRequestFactory($this->token, $org, $repository)
+                    new PullRequestsFactory($this->token, $org, $repository)
                 )
             )
             // Extract response

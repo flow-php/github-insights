@@ -1,8 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use App\Command\PullRequest\AggregateCommand;
-use App\Command\PullRequest\FetchCommand;
+use App\Command;
 use App\Kernel;
 use Flow\ETL\Config;
 use Symfony\Component\Console\Application;
@@ -25,13 +24,19 @@ return function (array $context) {
 
     $app = new Application("GitHub Insights");
     $app->add(
-        new FetchCommand(
+        new Command\Fetch\PullRequestsCommand(
             $kernel->getContainer()->getParameter('gh.token'),
             $kernel->getContainer()->getParameter('data.warehouse.dir'),
         )
     );
     $app->add(
-        new AggregateCommand(
+        new Command\Fetch\CommitsCommand(
+            $kernel->getContainer()->getParameter('gh.token'),
+            $kernel->getContainer()->getParameter('data.warehouse.dir'),
+        )
+    );
+    $app->add(
+        new Command\Aggregate\ContributionsCommand(
             $kernel->getContainer()->getParameter('data.warehouse.dir'),
             $kernel->getContainer()->getParameter('kernel.project_dir').'/templates',
         )

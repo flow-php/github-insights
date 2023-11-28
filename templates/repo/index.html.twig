@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="wrapper">
-    <h1>{{ org }}/{{ repo }} - Insights</h1>
+    <h1>{{ org }}/{{ repo }}</h1>
     <p>
         <a href="{{ path("app_org", {org: org}) }}">Back</a>
     </p>
@@ -14,7 +14,7 @@
     <ul>
         {% for year in years %}
         <li>
-            <a href="{{ path('app_pr_chart', {org: org, repo: repo, year: year}) }}">{{ year }}</a>
+            <a href="{{ path('app_repo_year', {org: org, repo: repo, year: year}) }}">{{ year }}</a>
         </li>
         {% else %}
         <li>There are no reports yet for given repository.</li>

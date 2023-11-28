@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Daily Pull Requests - {{ org }}/{{ repo }} - {{ year }}{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script>
+        window.onload = function () {
+            new Chart(document.getElementById('chart'),JSON.parse({{ chart_config|json_encode|raw }}));
+        };
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="wrapper">
+    <h1>{{ org }}/{{ repo }} - {{ year }}</h1>
+    <p>
+        <a href="{{ path("app_repo", {org: org, repo: repo}) }}">Back</a>
+    </p>
+
+    <h2>Top Contributors</h2>
+    <table style="width: 50%">
+        <thead>
+            <tr>
+                <th style="text-align: left; width: 10%;">Rank</th>
+                <th style="text-align: left">Avatar</th>
+                <th style="text-align: left">User</th>
+                <th style="text-align: left">Total Changed Lines</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contributor in top_contributors %}
+            <tr>
+                <td>{{ contributor.rank }}</td>
+                <td><img style="max-width:50px;" src="{{ contributor.user_avatar }}" alt="{{ contributor.user_login }}" /></td>
+                <td>
+                    <a href="{{ path('app_contributor', {org: org, repo: repo, year: year, login: contributor.user_login}) }}">
+                        {{ contributor.user_login }}
+                    </a>
+                </td>
+                <td>{{ contributor.contribution_changes_total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Daily Pull Requests</h2>
+    <a href="{{ path('app_repo_report', {org: org, repo: repo, year: year}) }}">Download CSV</a>
+    <div style="width: 100%;">
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+{% endblock %}
