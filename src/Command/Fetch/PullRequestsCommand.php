@@ -7,10 +7,13 @@ use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Flow;
+use Flow\ETL\Row;
+use Flow\ETL\Transformer\CallbackRowTransformer;
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -72,6 +75,8 @@ class PullRequestsCommand extends Command
         $factory = new Psr17Factory();
         $client = new Client($factory, $factory);
 
+        $progressIndicator = new ProgressIndicator($output);
+        $progressIndicator->start('Fetching pull requests...');
         (new Flow())
             ->read(
                 new PsrHttpClientDynamicExtractor(
@@ -89,6 +94,13 @@ class PullRequestsCommand extends Command
             ->drop('unpacked', 'data')
             // Unify key for partitioning
             ->withEntry('date_utc', ref('created_at')->toDateTime(\DATE_ATOM)->dateFormat())
+            ->transform(new CallbackRowTransformer(
+                function (Row $row) use ($progressIndicator) {
+                    $progressIndicator->setMessage('Processing: '.$row->valueOf('date_utc'));
+
+                    return $row;
+                }
+            ))
             // stop fetching data after given date
             ->until(ref('created_at')->toDateTime(\DATE_ATOM)->greaterThanEqual(lit($afterData)))
             // Save with overwrite, partition files per unified date
@@ -97,6 +109,7 @@ class PullRequestsCommand extends Command
             ->write(Json::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr"))
             // Execute
             ->run();
+        $progressIndicator->finish('Pull requests fetched!');
 
         $stopwatch->stop($this->getName());
 

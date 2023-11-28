@@ -10,10 +10,13 @@ use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Flow;
 use Flow\ETL\Join\Expression;
+use Flow\ETL\Row;
+use Flow\ETL\Transformer\CallbackRowTransformer;
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -87,6 +90,9 @@ class CommitsCommand extends Command
 
         $pullRequests = new PullRequests($org, $repository, $this->warehousePath);
 
+        $progressIndicator = new ProgressIndicator($output);
+        $progressIndicator->start('Fetching commits...');
+
         foreach ($pullRequests->between($afterDate, $beforeDate) as $prRow) {
             (new Flow())
                 ->read(
@@ -106,6 +112,13 @@ class CommitsCommand extends Command
                 // add pr number
                 ->withEntry('date_utc', lit($prRow->valueOf('date_utc')))
                 ->withEntry('pr', lit($prRow->valueOf('number')))
+                ->transform(new CallbackRowTransformer(
+                    function (Row $row) use ($progressIndicator) {
+                        $progressIndicator->setMessage('Processing: '.$row->valueOf('date_utc'));
+
+                        return $row;
+                    }
+                ))
                 ->mode(SaveMode::Overwrite)
                 ->joinEach(
                     new CommitDetailsFactory($this->token),
@@ -116,6 +129,7 @@ class CommitsCommand extends Command
                 // Execute
                 ->run();
         }
+        $progressIndicator->finish('Commits fetched!');
 
         $stopwatch->stop($this->getName());
 
