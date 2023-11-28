@@ -1,0 +1,50 @@
+name: Test Suite
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  functional:
+    name: "Functional Tests"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: pcov
+          tools: composer:v2
+          php-version: "8.1"
+          ini-values: memory_limit=-1
+
+      - name: "Get Composer Cache Directory"
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: "Cache Composer dependencies"
+        uses: "actions/cache@v3"
+        with:
+          path: "${{ steps.composer-cache.outputs.dir }}"
+          key: "php-8.1-locked-composer-${{ hashFiles('**/composer.lock') }}"
+          restore-keys: |
+            php-8.1-locked-composer-
+
+      - name: "Install dependencies"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: "Run Aggregations"
+        run: |
+            bin/gh fetch:pull-requests flow-php flow
+            bin/gh fetch:commits flow-php flow
+            bin/gh aggregate:contributions flow-php flow
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Inspect Data Warehouse"
+        run: |
+          tree -d var/data/warehouse >> $GITHUB_STEP_SUMMARY

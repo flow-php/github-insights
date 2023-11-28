@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use Flow\ETL\DSL\CSV;
+use Flow\ETL\Flow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PRController extends AbstractController
+class RepoController extends AbstractController
 {
-    #[Route('/pr/{org}/{repo}', name: 'app_pr')]
-    public function index(string $org, string $repo): Response
+    #[Route('/repo/{org}/{repo}', name: 'app_repo')]
+    public function repo(string $org, string $repo): Response
     {
         $reportsPath = $this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report';
 
@@ -26,14 +28,14 @@ class PRController extends AbstractController
             }
         }
 
-        return $this->render('pr/index.html.twig', [
+        return $this->render('repo/index.html.twig', [
             'org' => $org,
             'repo' => $repo,
             'years' => $years,
         ]);
     }
 
-    #[Route('/pr/{org}/{repo}/chart/{year}', name: 'app_pr_chart')]
+    #[Route('/repo/{org}/{repo}/{year}', name: 'app_repo_year')]
     public function chart(string $org, string $repo, int $year): Response
     {
         $chartConfigPath = $this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report/'.$year.'/daily_contributions.chart.json';
@@ -42,15 +44,21 @@ class PRController extends AbstractController
             throw $this->createNotFoundException('The report does not exist');
         }
 
-        return $this->render('pr/chart.html.twig', [
+        $topContributors = (new Flow())
+            ->read(CSV::from($this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report/'.$year.'/top_contributors.csv'))
+            ->limit(10)
+            ->getEachAsArray();
+
+        return $this->render('repo/year.html.twig', [
             'org' => $org,
             'repo' => $repo,
             'year' => $year,
             'chart_config' => \file_get_contents($chartConfigPath),
+            'top_contributors' => $topContributors,
         ]);
     }
 
-    #[Route('/pr/{org}/{repo}/report/{year}', name: 'app_pr_report')]
+    #[Route('/repo/{org}/{repo}/report/{year}', name: 'app_repo_report')]
     public function report(string $org, string $repo, int $year): Response
     {
         $report = $this->getParameter('data.warehouse.dir').'/'.$org.'/'.$repo.'/report/'.$year.'/daily_contributions.csv';

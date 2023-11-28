@@ -11,7 +11,7 @@
     <ul>
         {% for repo in repos %}
             <li>
-                <a href="{{ path("app_pr", {org: org, repo: repo}) }}">
+                <a href="{{ path("app_repo", {org: org, repo: repo}) }}">
                     {{ repo }}
                 </a>
             </li>
