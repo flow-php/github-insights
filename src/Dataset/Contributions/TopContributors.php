@@ -34,7 +34,7 @@ final class TopContributors
     {
         $rows = (new Flow())
             ->read(CSV::from($this->warehousePath."/{$this->org}/{$this->repository}/report/".$year.'/top_contributors.csv'))
-            ->filter(ref('user_login')->equals(lit($login)))
+            ->filter(ref('user_login')->lower()->equals(lit(\mb_strtolower($login))))
             ->fetch(1);
 
         if (0 === count($rows)) {

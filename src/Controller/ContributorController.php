@@ -20,6 +20,8 @@ class ContributorController extends AbstractController
     #[Route('/contributor/{org}/{repo}/{year}/{login}', name: 'app_contributor')]
     public function contributor(string $org, string $repo, int $year, string $login): Response
     {
+        $login = \mb_strtolower($login);
+
         try {
             $contributor = (new TopContributors($org, $repo, $this->getParameter('data.warehouse.dir')))
                 ->contributor($year, $login);
