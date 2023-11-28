@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [ main ]
 
 jobs:
   functional:
@@ -48,6 +47,7 @@ jobs:
 
       - name: "Inspect Data Warehouse"
         run: |
-          echo "```console" >> $GITHUB_STEP_SUMMARY
+          echo '# Data Warehouse - Content >> $GITHUB_STEP_SUMMARY
+          echo '```console' >> $GITHUB_STEP_SUMMARY
           tree -d var/data/warehouse >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
