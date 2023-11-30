@@ -3,15 +3,11 @@
 namespace App\Dataset\Contributions\Transformations;
 
 use App\Dataset\Contributions\DataFrameFactory\ContributionsFactory;
-use Flow\ETL\DataFrame;
 use Flow\ETL\Join\Expression;
-use Flow\ETL\Partition;
 use Flow\ETL\Partition\CallableFilter;
-use Flow\ETL\Transformation;
+use Flow\ETL\{DataFrame, Partition, Transformation};
 
-use function Flow\ETL\DSL\lit;
-use function Flow\ETL\DSL\not;
-use function Flow\ETL\DSL\ref;
+use function Flow\ETL\DSL\{lit, not, ref};
 
 final class Contributions implements Transformation
 {

@@ -6,9 +6,7 @@ use App\Dataset\Commit\DataFrameFactory\CommitDetailsFactory;
 use App\Dataset\PullRequests\PullRequests;
 use App\Factory\GitHub\GenericUrlFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
-use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
-use Flow\ETL\Flow;
 use Flow\ETL\Join\Expression;
 use Flow\ETL\Row;
 use Flow\ETL\Transformer\CallbackRowTransformer;
@@ -17,14 +15,13 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressIndicator;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use function Flow\ETL\DSL\lit;
-use function Flow\ETL\DSL\ref;
+use function Flow\ETL\Adapter\JSON\to_json;
+use function Flow\ETL\DSL\{data_frame, lit, ref};
 
 #[AsCommand(
     name: 'fetch:commits',
@@ -94,7 +91,7 @@ class CommitsCommand extends Command
         $progressIndicator->start('Fetching commits...');
 
         foreach ($pullRequests->between($afterDate, $beforeDate) as $prRow) {
-            (new Flow())
+            data_frame()
                 ->read(
                     new PsrHttpClientDynamicExtractor(
                         $client,
@@ -125,7 +122,7 @@ class CommitsCommand extends Command
                     Expression::on(['sha' => 'sha'], 'details_')
                 )
                 ->partitionBy(ref('date_utc'), ref('pr'))
-                ->write(Json::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/commit"))
+                ->write(to_json(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/commit"))
                 // Execute
                 ->run();
         }

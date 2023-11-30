@@ -3,9 +3,8 @@
 namespace App\Dataset\PullRequests;
 
 use Flow\ETL\DSL\Json;
-use Flow\ETL\Flow;
-use Flow\ETL\Partition;
 use Flow\ETL\Partition\CallableFilter;
+use Flow\ETL\{Flow, Partition};
 
 final class PullRequests
 {

@@ -3,17 +3,14 @@
 namespace App\Controller;
 
 use App\Dataset\Contributions\TopContributors;
-use Flow\ETL\DSL\ChartJS;
-use Flow\ETL\DSL\CSV;
+use Flow\ETL\DSL\{CSV, ChartJS};
 use Flow\ETL\Exception\InvalidArgumentException;
 use Flow\ETL\Flow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use function Flow\ETL\DSL\lit;
-use function Flow\ETL\DSL\ref;
-use function Flow\ETL\DSL\refs;
+use function Flow\ETL\DSL\{lit, ref, refs};
 
 class ContributorController extends AbstractController
 {

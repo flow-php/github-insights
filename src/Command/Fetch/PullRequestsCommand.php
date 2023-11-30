@@ -4,9 +4,7 @@ namespace App\Command\Fetch;
 
 use App\Factory\GitHub\PullRequestsFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
-use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
-use Flow\ETL\Flow;
 use Flow\ETL\Row;
 use Flow\ETL\Transformer\CallbackRowTransformer;
 use Http\Client\Curl\Client;
@@ -14,14 +12,13 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressIndicator;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use function Flow\ETL\DSL\lit;
-use function Flow\ETL\DSL\ref;
+use function Flow\ETL\Adapter\JSON\to_json;
+use function Flow\ETL\DSL\{data_frame, lit, ref};
 
 #[AsCommand(
     name: 'fetch:pr',
@@ -77,7 +74,7 @@ class PullRequestsCommand extends Command
 
         $progressIndicator = new ProgressIndicator($output);
         $progressIndicator->start('Fetching pull requests...');
-        (new Flow())
+        data_frame()
             ->read(
                 new PsrHttpClientDynamicExtractor(
                     $client,
@@ -106,7 +103,7 @@ class PullRequestsCommand extends Command
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(Json::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr"))
+            ->write(to_json(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr"))
             // Execute
             ->run();
         $progressIndicator->finish('Pull requests fetched!');

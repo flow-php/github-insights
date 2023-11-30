@@ -5,29 +5,20 @@ declare(strict_types=1);
 namespace App\Command\Aggregate;
 
 use App\Dataset\Contributions\Transformations\Contributions;
-use Flow\ETL\DSL\ChartJS;
-use Flow\ETL\DSL\CSV;
-use Flow\ETL\DSL\Entry;
-use Flow\ETL\DSL\Json;
 use Flow\ETL\Filesystem\SaveMode;
-use Flow\ETL\Flow;
 use Flow\ETL\Join\Expression;
 use Flow\ETL\Row;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use function Flow\ETL\DSL\first;
-use function Flow\ETL\DSL\lit;
-use function Flow\ETL\DSL\rank;
-use function Flow\ETL\DSL\ref;
-use function Flow\ETL\DSL\refs;
-use function Flow\ETL\DSL\sum;
-use function Flow\ETL\DSL\window;
+use function Flow\ETL\Adapter\ChartJS\{bar_chart, to_chartjs_file};
+use function Flow\ETL\Adapter\CSV\{from_csv, to_csv};
+use function Flow\ETL\Adapter\JSON\from_json;
+use function Flow\ETL\DSL\{data_frame, first, int_entry, lit, rank, ref, refs, sum, window};
 
 #[AsCommand(
     name: 'aggregate:contributions',
@@ -68,8 +59,8 @@ final class ContributionsCommand extends Command
         $io->note("Aggregating contributions to {$org}/{$repository} for {$year} year");
 
         // Create a list of top contributors
-        (new Flow())
-            ->read(Json::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr/date_utc=*/*"))
+        data_frame()
+            ->read(from_json(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr/date_utc=*/*"))
             ->transform(new Contributions($year, $org, $repository, $this->warehousePath))
             ->groupBy(ref('user_login'))
             ->aggregate(
@@ -83,12 +74,12 @@ final class ContributionsCommand extends Command
             ->rename('contribution_changes_deletions_sum', 'contribution_changes_deletions')
             ->withEntry('rank', rank()->over(window()->orderBy(ref('contribution_changes_total')->desc())))
             ->mode(SaveMode::Overwrite)
-            ->write(CSV::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
+            ->write(to_csv(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
             ->run();
 
         // Create daily contributions dataset merged with ranks from top contributors
-        (new Flow())
-            ->read(Json::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr/date_utc=*/*"))
+        data_frame()
+            ->read(from_json(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/pr/date_utc=*/*"))
             ->transform(new Contributions($year, $org, $repository, $this->warehousePath))
             ->groupBy(ref('date_utc'), ref('user_login'))
             ->aggregate(
@@ -102,18 +93,18 @@ final class ContributionsCommand extends Command
             ->rename('contribution_changes_deletions_sum', 'contribution_changes_deletions')
             ->sortBy(ref('date_utc')->asc(), ref('contribution_changes_total')->desc())
             ->join(
-                (new Flow())
-                    ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
+                data_frame()
+                    ->read(from_csv(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
                     ->select('user_login', 'rank'),
                 Expression::on(['user_login' => 'user_login'], 'top_contributor_'),
             )
             ->mode(SaveMode::Overwrite)
-            ->write(CSV::to(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
+            ->write(to_csv(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
             ->run();
 
         // Create daily contributions chart with top 10 contributors and remaining contributors grouped into "other_contributions" group
-        (new Flow())
-            ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
+        data_frame()
+            ->read(from_csv(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
             ->collect()
             ->select('date_utc', 'user_login', 'contribution_changes_total', 'top_contributor_rank')
             ->filter(ref('top_contributor_rank')->lessThanEqual(lit(10)))
@@ -121,8 +112,8 @@ final class ContributionsCommand extends Command
             ->pivot(ref('user_login'))
             ->aggregate(sum(ref('contribution_changes_total')))
             ->join(
-                (new Flow())
-                    ->read(CSV::from(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
+                data_frame()
+                    ->read(from_csv(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
                     ->collect()
                     ->filter(ref('top_contributor_rank')->greaterThan(lit(10)))
                     ->groupBy(ref('date_utc'))
@@ -131,13 +122,13 @@ final class ContributionsCommand extends Command
                 Expression::on(['date_utc' => 'date_utc'], 'other_'),
             )
             ->map(function (Row $row): Row {
-                return $row->map(fn (Row\Entry $e) => null === $e->value() ? Entry::int($e->name(), 0) : $e);
+                return $row->map(fn (Row\Entry $e) => null === $e->value() ? int_entry($e->name(), 0) : $e);
             })
             ->sortBy(ref('date_utc')->asc())
             ->collectRefs($users = refs())
             ->write(
-                ChartJS::to_file(
-                    ChartJS::bar(ref('date_utc'), $users->without('date_utc'))
+                to_chartjs_file(
+                    bar_chart(ref('date_utc'), $users->without('date_utc'))
                         ->setOptions([
                             'scales' => [
                                 'x' => ['stacked' => true],
