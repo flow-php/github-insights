@@ -6,8 +6,7 @@ use Flow\ETL\DSL\CSV;
 use Flow\ETL\Exception\InvalidArgumentException;
 use Flow\ETL\Flow;
 
-use function Flow\ETL\DSL\lit;
-use function Flow\ETL\DSL\ref;
+use function Flow\ETL\DSL\{lit, ref};
 
 final class TopContributors
 {

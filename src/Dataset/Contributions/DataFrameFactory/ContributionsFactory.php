@@ -2,17 +2,11 @@
 
 namespace App\Dataset\Contributions\DataFrameFactory;
 
-use Flow\ETL\DataFrame;
-use Flow\ETL\DataFrameFactory;
-use Flow\ETL\DSL\From;
-use Flow\ETL\DSL\Json;
-use Flow\ETL\Flow;
-use Flow\ETL\Partition;
+use Flow\ETL\DSL\{From, Json};
 use Flow\ETL\Partition\CallableFilter;
-use Flow\ETL\Rows;
+use Flow\ETL\{DataFrame, DataFrameFactory, Flow, Partition, Rows};
 
-use function Flow\ETL\DSL\ref;
-use function Flow\ETL\DSL\sum;
+use function Flow\ETL\DSL\{ref, sum};
 
 final class ContributionsFactory implements DataFrameFactory
 {

@@ -3,10 +3,7 @@
 namespace App\Dataset\Commit\DataFrameFactory;
 
 use Flow\ETL\Adapter\Http\PsrHttpClientStaticExtractor;
-use Flow\ETL\DataFrame;
-use Flow\ETL\DataFrameFactory;
-use Flow\ETL\Flow;
-use Flow\ETL\Rows;
+use Flow\ETL\{DataFrame, DataFrameFactory, Flow, Rows};
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 
