@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4b0bf5d85e62fd95c902207633512dc",
+    "content-hash": "747847c6fe415ecb3ef71788ccfa913e",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -74,20 +74,20 @@
         },
         {
             "name": "flow-php/array-dot",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/array-dot.git",
-                "reference": "43cc597dbc84422c07f47d5870217c2351d08e23"
+                "reference": "01346bb82495b7d08086a1e214b2bc6819e8ca7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/array-dot/zipball/43cc597dbc84422c07f47d5870217c2351d08e23",
-                "reference": "43cc597dbc84422c07f47d5870217c2351d08e23",
+                "url": "https://api.github.com/repos/flow-php/array-dot/zipball/01346bb82495b7d08086a1e214b2bc6819e8ca7b",
+                "reference": "01346bb82495b7d08086a1e214b2bc6819e8ca7b",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1 || ~8.2"
+                "php": "~8.1 || ~8.2 || ~8.3"
             },
             "type": "library",
             "autoload": {
@@ -116,28 +116,27 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/array-dot/issues",
-                "source": "https://github.com/flow-php/array-dot/tree/0.4.0"
+                "source": "https://github.com/flow-php/array-dot/tree/0.5.0"
             },
-            "time": "2023-10-13T10:00:19+00:00"
+            "time": "2023-11-30T22:14:32+00:00"
         },
         {
             "name": "flow-php/dremel",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/dremel.git",
-                "reference": "c1d1b4e15d68bc143c5a9344f202e00ef8e04239"
+                "reference": "c5e07b7ddb1e2d8759bad53964b326044f9ca39d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/dremel/zipball/c1d1b4e15d68bc143c5a9344f202e00ef8e04239",
-                "reference": "c1d1b4e15d68bc143c5a9344f202e00ef8e04239",
+                "url": "https://api.github.com/repos/flow-php/dremel/zipball/c5e07b7ddb1e2d8759bad53964b326044f9ca39d",
+                "reference": "c5e07b7ddb1e2d8759bad53964b326044f9ca39d",
                 "shasum": ""
             },
             "require": {
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -162,28 +161,28 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/dremel/issues",
-                "source": "https://github.com/flow-php/dremel/tree/1.x"
+                "source": "https://github.com/flow-php/dremel/tree/0.5.0"
             },
-            "time": "2023-11-23T20:32:45+00:00"
+            "time": "2023-11-30T22:14:28+00:00"
         },
         {
             "name": "flow-php/etl",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl.git",
-                "reference": "f19e143c23f2e59fad3237e382220716ca9df41c"
+                "reference": "acdb1e987abd39a83b2a0978cdd457819bec7e8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl/zipball/f19e143c23f2e59fad3237e382220716ca9df41c",
-                "reference": "f19e143c23f2e59fad3237e382220716ca9df41c",
+                "url": "https://api.github.com/repos/flow-php/etl/zipball/acdb1e987abd39a83b2a0978cdd457819bec7e8d",
+                "reference": "acdb1e987abd39a83b2a0978cdd457819bec7e8d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "flow-php/array-dot": "^0.4 || 1.x-dev",
+                "flow-php/array-dot": "^0.5.0 || 1.x-dev",
                 "php": "~8.1 || ~8.2 || ~8.3",
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
                 "webmozart/glob": "^3.0 || ^4.0"
@@ -200,7 +199,6 @@
                 "moneyphp/money": "Provides MoneyParser that is required by ToMoney scalar function",
                 "ramsey/uuid": "Provides scalar function `uuid_v4` and `uuid_v7` that allow generate uuid entry"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "aws/aws-sdk-php": [
@@ -230,29 +228,28 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl/issues",
-                "source": "https://github.com/flow-php/etl/tree/1.x"
+                "source": "https://github.com/flow-php/etl/tree/0.5.0"
             },
-            "time": "2023-11-29T23:34:13+00:00"
+            "time": "2023-11-30T22:54:53+00:00"
         },
         {
             "name": "flow-php/etl-adapter-chartjs",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-chartjs.git",
-                "reference": "70ba1ac64bb72f7575f2573078463dc513c87806"
+                "reference": "ae0a7406696eab81648c24cfede2fbc8772b6449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-chartjs/zipball/70ba1ac64bb72f7575f2573078463dc513c87806",
-                "reference": "70ba1ac64bb72f7575f2573078463dc513c87806",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-chartjs/zipball/ae0a7406696eab81648c24cfede2fbc8772b6449",
+                "reference": "ae0a7406696eab81648c24cfede2fbc8772b6449",
                 "shasum": ""
             },
             "require": {
-                "flow-php/etl": "^0.4 || 1.x-dev",
+                "flow-php/etl": "^0.5.0 || 1.x-dev",
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -279,29 +276,28 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-chartjs/issues",
-                "source": "https://github.com/flow-php/etl-adapter-chartjs/tree/1.x"
+                "source": "https://github.com/flow-php/etl-adapter-chartjs/tree/0.5.0"
             },
-            "time": "2023-11-29T23:34:08+00:00"
+            "time": "2023-11-30T22:54:51+00:00"
         },
         {
             "name": "flow-php/etl-adapter-csv",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-csv.git",
-                "reference": "b63e21dba0e6867809d2292d108d5950e6c73a12"
+                "reference": "2352ac834e892663f9b6084e9fde9308187e68f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-csv/zipball/b63e21dba0e6867809d2292d108d5950e6c73a12",
-                "reference": "b63e21dba0e6867809d2292d108d5950e6c73a12",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-csv/zipball/2352ac834e892663f9b6084e9fde9308187e68f3",
+                "reference": "2352ac834e892663f9b6084e9fde9308187e68f3",
                 "shasum": ""
             },
             "require": {
-                "flow-php/etl": "^0.4 || 1.x-dev",
+                "flow-php/etl": "^0.5.0 || 1.x-dev",
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -328,27 +324,27 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-csv/issues",
-                "source": "https://github.com/flow-php/etl-adapter-csv/tree/1.x"
+                "source": "https://github.com/flow-php/etl-adapter-csv/tree/0.5.0"
             },
-            "time": "2023-11-29T23:34:09+00:00"
+            "time": "2023-11-30T22:54:51+00:00"
         },
         {
             "name": "flow-php/etl-adapter-http",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-http.git",
-                "reference": "9c68369e064627ef700fcd524f6d0f10bdd9b0ca"
+                "reference": "59265670ff2b8d4ec63f272faf46dcb7fff999fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-http/zipball/9c68369e064627ef700fcd524f6d0f10bdd9b0ca",
-                "reference": "9c68369e064627ef700fcd524f6d0f10bdd9b0ca",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-http/zipball/59265670ff2b8d4ec63f272faf46dcb7fff999fd",
+                "reference": "59265670ff2b8d4ec63f272faf46dcb7fff999fd",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "flow-php/etl": "^0.4 || 1.x-dev",
+                "flow-php/etl": "^0.5.0 || 1.x-dev",
                 "php": "~8.1 || ~8.2 || ~8.3",
                 "psr/http-client": "^1.0"
             },
@@ -356,7 +352,6 @@
                 "nyholm/psr7": "^1.8",
                 "php-http/curl-client": "^2.2"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -379,31 +374,30 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-http/issues",
-                "source": "https://github.com/flow-php/etl-adapter-http/tree/1.x"
+                "source": "https://github.com/flow-php/etl-adapter-http/tree/0.5.0"
             },
-            "time": "2023-11-29T23:34:08+00:00"
+            "time": "2023-11-30T22:54:52+00:00"
         },
         {
             "name": "flow-php/etl-adapter-json",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-json.git",
-                "reference": "5131c55588ab04d47296aab260e30a126e652a12"
+                "reference": "4247abed33c554919576f02d6e5423ffce832d61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-json/zipball/5131c55588ab04d47296aab260e30a126e652a12",
-                "reference": "5131c55588ab04d47296aab260e30a126e652a12",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-json/zipball/4247abed33c554919576f02d6e5423ffce832d61",
+                "reference": "4247abed33c554919576f02d6e5423ffce832d61",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "flow-php/etl": "^0.4 || 1.x-dev",
+                "flow-php/etl": "^0.5.0 || 1.x-dev",
                 "halaxa/json-machine": "^1.0",
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -430,31 +424,30 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-json/issues",
-                "source": "https://github.com/flow-php/etl-adapter-json/tree/1.x"
+                "source": "https://github.com/flow-php/etl-adapter-json/tree/0.5.0"
             },
-            "time": "2023-11-29T23:34:09+00:00"
+            "time": "2023-11-30T22:54:54+00:00"
         },
         {
             "name": "flow-php/etl-adapter-parquet",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-parquet.git",
-                "reference": "c8a052442836e4318d0dcd00d3d92e030a4dbbae"
+                "reference": "573e4c270018fd899a2582f13c0437aa1e6a385e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-parquet/zipball/c8a052442836e4318d0dcd00d3d92e030a4dbbae",
-                "reference": "c8a052442836e4318d0dcd00d3d92e030a4dbbae",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-parquet/zipball/573e4c270018fd899a2582f13c0437aa1e6a385e",
+                "reference": "573e4c270018fd899a2582f13c0437aa1e6a385e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "flow-php/etl": "^0.4 || 1.x-dev",
-                "flow-php/parquet": "^0.4 || 1.x-dev",
+                "flow-php/etl": "^0.5.0 || 1.x-dev",
+                "flow-php/parquet": "^0.5.0 || 1.x-dev",
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -481,34 +474,33 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-parquet/issues",
-                "source": "https://github.com/flow-php/etl-adapter-parquet/tree/1.x"
+                "source": "https://github.com/flow-php/etl-adapter-parquet/tree/0.5.0"
             },
-            "time": "2023-11-29T23:34:11+00:00"
+            "time": "2023-11-30T22:54:52+00:00"
         },
         {
             "name": "flow-php/parquet",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/parquet.git",
-                "reference": "53109b68af282eb00e7d8ce1c5f7e81a7e812f82"
+                "reference": "8240cb98a59273d7686463369709380752a7d1d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/parquet/zipball/53109b68af282eb00e7d8ce1c5f7e81a7e812f82",
-                "reference": "53109b68af282eb00e7d8ce1c5f7e81a7e812f82",
+                "url": "https://api.github.com/repos/flow-php/parquet/zipball/8240cb98a59273d7686463369709380752a7d1d5",
+                "reference": "8240cb98a59273d7686463369709380752a7d1d5",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.1",
                 "ext-bcmath": "*",
                 "ext-zlib": "*",
-                "flow-php/dremel": "1.x-dev",
-                "flow-php/snappy": "1.x-dev",
+                "flow-php/dremel": "^0.5.0 || 1.x-dev",
+                "flow-php/snappy": "^0.5.0 || 1.x-dev",
                 "packaged/thrift": "^0.15.0",
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -535,28 +527,27 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/parquet/issues",
-                "source": "https://github.com/flow-php/parquet/tree/1.x"
+                "source": "https://github.com/flow-php/parquet/tree/0.5.0"
             },
-            "time": "2023-11-23T20:32:32+00:00"
+            "time": "2023-11-30T22:55:10+00:00"
         },
         {
             "name": "flow-php/snappy",
-            "version": "1.x-dev",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/snappy.git",
-                "reference": "b2a864ae4225c4975e1b68db5c0894c906ae7ed1"
+                "reference": "bffaa2a1969b39bc530c967445a6e0effb78855c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/snappy/zipball/b2a864ae4225c4975e1b68db5c0894c906ae7ed1",
-                "reference": "b2a864ae4225c4975e1b68db5c0894c906ae7ed1",
+                "url": "https://api.github.com/repos/flow-php/snappy/zipball/bffaa2a1969b39bc530c967445a6e0effb78855c",
+                "reference": "bffaa2a1969b39bc530c967445a6e0effb78855c",
                 "shasum": ""
             },
             "require": {
                 "php": "~8.1 || ~8.2 || ~8.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -585,9 +576,9 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/snappy/issues",
-                "source": "https://github.com/flow-php/snappy/tree/1.x"
+                "source": "https://github.com/flow-php/snappy/tree/0.5.0"
             },
-            "time": "2023-11-23T20:32:48+00:00"
+            "time": "2023-11-30T22:55:09+00:00"
         },
         {
             "name": "halaxa/json-machine",
@@ -832,16 +823,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.19.1",
+            "version": "1.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e"
+                "reference": "61e1a1eb69c92741f5896d9e05fb8e9d7e8bb0cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/57f3de01d32085fea20865f9b16fb0e69347c39e",
-                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/61e1a1eb69c92741f5896d9e05fb8e9d7e8bb0cb",
+                "reference": "61e1a1eb69c92741f5896d9e05fb8e9d7e8bb0cb",
                 "shasum": ""
             },
             "require": {
@@ -904,9 +895,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.19.1"
+                "source": "https://github.com/php-http/discovery/tree/1.19.2"
             },
-            "time": "2023-07-11T07:02:26+00:00"
+            "time": "2023-11-30T16:49:05+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -5045,15 +5036,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "flow-php/etl": 20,
-        "flow-php/etl-adapter-chartjs": 20,
-        "flow-php/etl-adapter-csv": 20,
-        "flow-php/etl-adapter-http": 20,
-        "flow-php/etl-adapter-json": 20,
-        "flow-php/etl-adapter-parquet": 20,
-        "flow-php/parquet": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
