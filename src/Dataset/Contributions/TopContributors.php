@@ -32,7 +32,7 @@ final class TopContributors
     public function contributor(int $year, string $login): array
     {
         $rows = (new Flow())
-            ->read(CSV::from($this->warehousePath."/{$this->org}/{$this->repository}/report/".$year.'/top_contributors.csv'))
+            ->read(CSV::from($this->warehousePath."/repo/{$this->org}/{$this->repository}/report/".$year.'/top_contributors.csv'))
             ->filter(ref('user_login')->lower()->equals(lit(\mb_strtolower($login))))
             ->fetch(1);
 

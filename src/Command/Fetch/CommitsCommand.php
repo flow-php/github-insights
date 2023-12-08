@@ -122,7 +122,7 @@ class CommitsCommand extends Command
                     Expression::on(['sha' => 'sha'], 'details_')
                 )
                 ->partitionBy(ref('date_utc'), ref('pr'))
-                ->write(to_json(rtrim($this->warehousePath, '/')."/{$org}/{$repository}/commit"))
+                ->write(to_json(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/commit"))
                 // Execute
                 ->run();
         }

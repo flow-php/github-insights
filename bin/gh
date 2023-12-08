@@ -36,6 +36,12 @@ return function (array $context) {
         )
     );
     $app->add(
+        new Command\Fetch\UserPublicEventsCommand(
+            $kernel->getContainer()->getParameter('gh.token'),
+            $kernel->getContainer()->getParameter('data.warehouse.dir'),
+        )
+    );
+    $app->add(
         new Command\Aggregate\ContributionsCommand(
             $kernel->getContainer()->getParameter('data.warehouse.dir'),
             $kernel->getContainer()->getParameter('kernel.project_dir').'/templates',

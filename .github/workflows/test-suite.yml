@@ -38,10 +38,11 @@ jobs:
       - name: "Install dependencies"
         run: "composer install --no-interaction --no-progress --no-suggest"
 
-      - name: "Run Aggregations"
+      - name: "Fetch Data & Run Aggregations"
         run: |
             bin/gh fetch:pull-requests flow-php flow
             bin/gh fetch:commits flow-php flow
+            bin/gh fetch:user:events:public norberttech
             bin/gh aggregate:contributions flow-php flow
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
