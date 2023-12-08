@@ -27,7 +27,7 @@ final class ContributionsFactory implements DataFrameFactory
         $end = new \DateTimeImmutable($rows->sortBy(ref('date_utc')->asc())->reverse()->first()->valueOf('date_utc'));
 
         return (new Flow())
-            ->read(Json::from(rtrim($this->warehousePath, '/')."/{$this->org}/{$this->repository}/commit/date_utc=*/pr=*/*"))
+            ->read(Json::from(rtrim($this->warehousePath, '/')."/repo/{$this->org}/{$this->repository}/commit/date_utc=*/pr=*/*"))
             ->filterPartitions(
                 new CallableFilter(
                     function (Partition $partition) use ($start, $end): bool {

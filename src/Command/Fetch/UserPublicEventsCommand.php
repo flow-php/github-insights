@@ -2,7 +2,7 @@
 
 namespace App\Command\Fetch;
 
-use App\Factory\GitHub\PullRequestsFactory;
+use App\Factory\GitHub\UserPublicEventsFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Row;
@@ -18,14 +18,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 use function Flow\ETL\Adapter\JSON\to_json;
-use function Flow\ETL\DSL\{data_frame, lit, ref};
+use function Flow\ETL\DSL\{data_frame, lit, ref, to_output};
 
 #[AsCommand(
-    name: 'fetch:pr',
-    aliases: ['fetch:pull-requests', 'fetch:prs'],
-    description: 'Fetch GitHub pull requests to data warehouse',
+    name: 'fetch:user:events:public',
+    description: 'Fetch github user public events',
 )]
-class PullRequestsCommand extends Command
+class UserPublicEventsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
@@ -45,9 +44,9 @@ class PullRequestsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('org', InputArgument::REQUIRED)
-            ->addArgument('repository', InputArgument::REQUIRED)
-            ->addOption('after_date', null, InputArgument::OPTIONAL, 'Fetch pull requests created after given date', '-5 days')
+            ->addArgument('username', InputArgument::REQUIRED)
+            ->addOption('after_date', null, InputArgument::OPTIONAL, 'Fetch commits created after given date', '-5 day')
+            ->addOption('before_date', null, InputArgument::OPTIONAL, 'Fetch commits created before given date', 'now')
         ;
     }
 
@@ -57,28 +56,28 @@ class PullRequestsCommand extends Command
         $stopwatch->start($this->getName());
         $io = new SymfonyStyle($input, $output);
 
-        $org = $input->getArgument('org');
-        $repository = $input->getArgument('repository');
+        $username = $input->getArgument('username');
         try {
             $afterDate = new \DateTimeImmutable($input->getOption('after_date'), new \DateTimeZone('UTC'));
+            $afterDate->setTime(0, 0, 0);
         } catch (\Exception $e) {
             $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: '.$input->getOption('after_date'));
 
             return Command::FAILURE;
         }
 
-        $io->note("Fetching pull requests from {$org}/{$repository} created after {$afterDate->format(\DATE_ATOM)}");
+        $io->note("Fetching public events from {$username} created after {$afterDate->format(\DATE_ATOM)}");
 
         $factory = new Psr17Factory();
         $client = new Client($factory, $factory);
 
         $progressIndicator = new ProgressIndicator($output);
-        $progressIndicator->start('Fetching pull requests...');
+        $progressIndicator->start('Fetching user public events...');
         data_frame()
             ->read(
                 new PsrHttpClientDynamicExtractor(
                     $client,
-                    new PullRequestsFactory($this->token, $org, $repository)
+                    new UserPublicEventsFactory($this->token, $username)
                 )
             )
             // Extract response
@@ -99,14 +98,14 @@ class PullRequestsCommand extends Command
                 }
             ))
             // stop fetching data after given date
-            ->until(ref('created_at')->toDateTime(\DATE_ATOM)->greaterThanEqual(lit($afterDate)))
+//            ->until(ref('created_at')->toDateTime(\DATE_ATOM)->greaterThanEqual(lit($afterDate)))
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(to_json(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/pr"))
+            ->write(to_json(rtrim($this->warehousePath, '/')."/user/{$username}/events"))
             // Execute
             ->run();
-        $progressIndicator->finish('Pull requests fetched!');
+        $progressIndicator->finish('User public events fetched!');
 
         $stopwatch->stop($this->getName());
 
