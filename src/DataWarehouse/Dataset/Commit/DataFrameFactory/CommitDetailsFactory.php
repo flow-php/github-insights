@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Dataset\Commit\DataFrameFactory;
+namespace App\DataWarehouse\Dataset\Commit\DataFrameFactory;
 
 use Flow\ETL\Adapter\Http\PsrHttpClientStaticExtractor;
-use Flow\ETL\{DataFrame, DataFrameFactory, Flow, Rows};
+use Flow\ETL\{DataFrame, DataFrameFactory, Rows};
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 
-use function Flow\ETL\DSL\ref;
+use function Flow\ETL\DSL\{df, ref};
 
 final class CommitDetailsFactory implements DataFrameFactory
 {
@@ -26,12 +26,12 @@ final class CommitDetailsFactory implements DataFrameFactory
         foreach ($rows->reduceToArray('url') as $url) {
             $commitRequests[] = $factory->createRequest('GET', $url)
                 ->withHeader('Accept', 'application/vnd.github+json')
-                ->withHeader('Authorization', 'Bearer '.$this->token)
+                ->withHeader('Authorization', 'Bearer ' . $this->token)
                 ->withHeader('X-GitHub-Api-Version', '2022-11-28')
                 ->withHeader('User-Agent', 'flow-gh-api-fetch');
         }
 
-        return (new Flow())
+        return df()
             ->read(
                 new PsrHttpClientStaticExtractor(
                     $client,
@@ -50,10 +50,13 @@ final class CommitDetailsFactory implements DataFrameFactory
 
     public function __serialize(): array
     {
-        return [];
+        return [
+            'token' => $this->token,
+        ];
     }
 
     public function __unserialize(array $data): void
     {
+        $this->token = $data['token'];
     }
 }

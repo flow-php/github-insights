@@ -16,3 +16,7 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\DataWarehouse\Paths:
+        arguments: ['%data.warehouse.dir%']
+        public: true

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command\Aggregate;
 
-use App\Dataset\Contributions\Transformations\Contributions;
+use App\DataWarehouse\Dataset\Contributions\Transformations\Contributions;
+use App\DataWarehouse\Paths;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Join\Expression;
 use Flow\ETL\Row;
@@ -27,13 +28,9 @@ use function Flow\ETL\DSL\{data_frame, first, int_entry, lit, rank, ref, refs, s
 final class ContributionsCommand extends Command
 {
     public function __construct(
-        private readonly string $warehousePath,
+        private readonly Paths $paths,
         private readonly string $templatesPath,
     ) {
-        if (!file_exists($this->warehousePath) || !is_dir($this->warehousePath)) {
-            throw new \InvalidArgumentException('Data warehouse path does not exist or it\'s not a directory: '.$this->warehousePath);
-        }
-
         parent::__construct();
     }
 
@@ -60,8 +57,8 @@ final class ContributionsCommand extends Command
 
         // Create a list of top contributors
         data_frame()
-            ->read(from_json(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/pr/date_utc=*/*"))
-            ->transform(new Contributions($year, $org, $repository, $this->warehousePath))
+            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*'))
+            ->transform(new Contributions($year, $org, $repository, $this->paths))
             ->groupBy(ref('user_login'))
             ->aggregate(
                 sum(ref('contribution_changes_total')),
@@ -74,13 +71,13 @@ final class ContributionsCommand extends Command
             ->rename('contribution_changes_deletions_sum', 'contribution_changes_deletions')
             ->withEntry('rank', rank()->over(window()->orderBy(ref('contribution_changes_total')->desc())))
             ->mode(SaveMode::Overwrite)
-            ->write(to_csv(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
+            ->write(to_csv($this->paths->report($org, $repository, $year, 'top_contributors.csv', Paths\Layer::RAW)))
             ->run();
 
         // Create daily contributions dataset merged with ranks from top contributors
         data_frame()
-            ->read(from_json(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/pr/date_utc=*/*"))
-            ->transform(new Contributions($year, $org, $repository, $this->warehousePath))
+            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*'))
+            ->transform(new Contributions($year, $org, $repository, $this->paths))
             ->groupBy(ref('date_utc'), ref('user_login'))
             ->aggregate(
                 sum(ref('contribution_changes_total')),
@@ -94,17 +91,17 @@ final class ContributionsCommand extends Command
             ->sortBy(ref('date_utc')->asc(), ref('contribution_changes_total')->desc())
             ->join(
                 data_frame()
-                    ->read(from_csv(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/report/".$year.'/top_contributors.csv'))
+                    ->read(from_csv($this->paths->report($org, $repository, $year, 'top_contributors.csv', Paths\Layer::RAW)))
                     ->select('user_login', 'rank'),
                 Expression::on(['user_login' => 'user_login'], 'top_contributor_'),
             )
             ->mode(SaveMode::Overwrite)
-            ->write(to_csv(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
+            ->write(to_csv($this->paths->report($org, $repository, $year, 'daily_contributions.csv', Paths\Layer::RAW)))
             ->run();
 
         // Create daily contributions chart with top 10 contributors and remaining contributors grouped into "other_contributions" group
         data_frame()
-            ->read(from_csv(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
+            ->read(from_csv($this->paths->report($org, $repository, $year, 'daily_contributions.csv', Paths\Layer::RAW)))
             ->collect()
             ->select('date_utc', 'user_login', 'contribution_changes_total', 'top_contributor_rank')
             ->filter(ref('top_contributor_rank')->lessThanEqual(lit(10)))
@@ -113,7 +110,7 @@ final class ContributionsCommand extends Command
             ->aggregate(sum(ref('contribution_changes_total')))
             ->join(
                 data_frame()
-                    ->read(from_csv(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/report/".$year.'/daily_contributions.csv'))
+                    ->read(from_csv($this->paths->report($org, $repository, $year, 'daily_contributions.csv', Paths\Layer::RAW)))
                     ->collect()
                     ->filter(ref('top_contributor_rank')->greaterThan(lit(10)))
                     ->groupBy(ref('date_utc'))
@@ -135,15 +132,15 @@ final class ContributionsCommand extends Command
                                 'y' => ['stacked' => true],
                             ],
                         ]),
-                    rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/report/".$year.'/daily_contributions.chart.json',
-                    rtrim($this->templatesPath, '/').'/flow/chart/chartjs.json'
+                    $this->paths->report($org, $repository, $year, 'daily_contributions.chart.json', Paths\Layer::RAW),
+                    rtrim($this->templatesPath, '/') . '/flow/chart/chartjs.json'
                 )
             )
             ->run();
 
         $stopwatch->stop($this->getName());
 
-        $io->success('Done in '.\number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2).'s');
+        $io->success('Done in ' . \number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2) . 's');
 
         return Command::SUCCESS;
     }

@@ -29,7 +29,7 @@ final class UserPublicEventsFactory implements NextRequestFactory
             if (isset($paginationLinkHeaders['next'])) {
                 return $this->factory->createRequest('GET', $paginationLinkHeaders['next'])
                     ->withHeader('Accept', 'application/vnd.github+json')
-                    ->withHeader('Authorization', 'Bearer '.$this->token)
+                    ->withHeader('Authorization', 'Bearer ' . $this->token)
                     ->withHeader('X-GitHub-Api-Version', '2022-11-28')
                     ->withHeader('User-Agent', 'flow-gh-api-fetch');
             }
@@ -40,7 +40,7 @@ final class UserPublicEventsFactory implements NextRequestFactory
         return $this->factory
             ->createRequest('GET', "https://api.github.com/users/{$this->username}/events/public?per_page=100&page=1")
             ->withHeader('Accept', 'application/vnd.github+json')
-            ->withHeader('Authorization', 'Bearer '.$this->token)
+            ->withHeader('Authorization', 'Bearer ' . $this->token)
             ->withHeader('X-GitHub-Api-Version', '2022-11-28')
             ->withHeader('User-Agent', 'flow-gh-api-fetch');
     }

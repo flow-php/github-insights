@@ -7,13 +7,14 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "flow-php/etl": "^0.5",
-        "flow-php/etl-adapter-chartjs": "^0.5",
-        "flow-php/etl-adapter-csv": "^0.5",
-        "flow-php/etl-adapter-http": "^0.5",
-        "flow-php/etl-adapter-json": "^0.5",
-        "flow-php/etl-adapter-parquet": "^0.5",
-        "flow-php/parquet": "^0.5",
+        "flow-php/etl": "^1.x-dev",
+        "flow-php/etl-adapter-chartjs": "^1.x-dev",
+        "flow-php/etl-adapter-csv": "^1.x-dev",
+        "flow-php/etl-adapter-filesystem": "^1.x-dev",
+        "flow-php/etl-adapter-http": "^1.x-dev",
+        "flow-php/etl-adapter-json": "^1.x-dev",
+        "flow-php/etl-adapter-parquet": "^1.x-dev",
+        "flow-php/parquet": "^1.x-dev",
         "nyholm/psr7": "^1.8",
         "php-http/curl-client": "^2.3",
         "psr/http-client": "^1.0",
@@ -58,6 +59,12 @@
     },
     "scripts": {
         "cs:php:fix": "vendor/bin/php-cs-fixer fix",
+        "test:functional": [
+            "bin/gh fetch:pull-requests flow-php flow",
+            "bin/gh fetch:commits flow-php flow",
+            "bin/gh fetch:user:events:public norberttech",
+            "bin/gh aggregate:contributions flow-php flow"
+        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

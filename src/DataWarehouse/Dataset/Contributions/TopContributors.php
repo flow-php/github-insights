@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Dataset\Contributions;
+namespace App\DataWarehouse\Dataset\Contributions;
 
-use Flow\ETL\DSL\CSV;
+use App\DataWarehouse\Paths;
 use Flow\ETL\Exception\InvalidArgumentException;
-use Flow\ETL\Flow;
 
-use function Flow\ETL\DSL\{lit, ref};
+use function Flow\ETL\Adapter\CSV\from_csv;
+use function Flow\ETL\DSL\{df, lit, ref};
 
 final class TopContributors
 {
     public function __construct(
         private readonly string $org,
         private readonly string $repository,
-        private readonly string $warehousePath,
+        private readonly Paths $paths
     ) {
     }
 
@@ -31,8 +31,8 @@ final class TopContributors
      */
     public function contributor(int $year, string $login): array
     {
-        $rows = (new Flow())
-            ->read(CSV::from($this->warehousePath."/repo/{$this->org}/{$this->repository}/report/".$year.'/top_contributors.csv'))
+        $rows = df()
+            ->read(from_csv($this->paths->report($this->org, $this->repository, $year, 'top_contributors.csv', Paths\Layer::RAW)))
             ->filter(ref('user_login')->lower()->equals(lit(\mb_strtolower($login))))
             ->fetch(1);
 

@@ -2,8 +2,9 @@
 
 namespace App\Command\Fetch;
 
-use App\Dataset\Commit\DataFrameFactory\CommitDetailsFactory;
-use App\Dataset\PullRequests\PullRequests;
+use App\DataWarehouse\Dataset\Commit\DataFrameFactory\CommitDetailsFactory;
+use App\DataWarehouse\Dataset\PullRequests\PullRequests;
+use App\DataWarehouse\Paths;
 use App\Factory\GitHub\GenericUrlFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\Filesystem\SaveMode;
@@ -31,14 +32,10 @@ class CommitsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
-        private readonly string $warehousePath,
+        private readonly Paths $paths
     ) {
         if ('' === $token) {
             throw new \InvalidArgumentException('GitHub API Token must be provided.');
-        }
-
-        if (!file_exists($this->warehousePath)) {
-            \mkdir($this->warehousePath, recursive: true);
         }
 
         parent::__construct();
@@ -66,7 +63,7 @@ class CommitsCommand extends Command
             $afterDate = new \DateTimeImmutable($input->getOption('after_date'), new \DateTimeZone('UTC'));
             $afterDate->setTime(0, 0, 0);
         } catch (\Exception $e) {
-            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: '.$input->getOption('after_date'));
+            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: ' . $input->getOption('after_date'));
 
             return Command::FAILURE;
         }
@@ -75,7 +72,7 @@ class CommitsCommand extends Command
             $beforeDate = new \DateTimeImmutable($input->getOption('before_date'), new \DateTimeZone('UTC'));
             $beforeDate->setTime(0, 0, 0);
         } catch (\Exception $e) {
-            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: '.$input->getOption('before_date'));
+            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: ' . $input->getOption('before_date'));
 
             return Command::FAILURE;
         }
@@ -85,7 +82,7 @@ class CommitsCommand extends Command
         $factory = new Psr17Factory();
         $client = new Client($factory, $factory);
 
-        $pullRequests = new PullRequests($org, $repository, $this->warehousePath);
+        $pullRequests = new PullRequests($org, $repository, $this->paths);
 
         $progressIndicator = new ProgressIndicator($output);
         $progressIndicator->start('Fetching commits...');
@@ -111,7 +108,7 @@ class CommitsCommand extends Command
                 ->withEntry('pr', lit($prRow->valueOf('number')))
                 ->transform(new CallbackRowTransformer(
                     function (Row $row) use ($progressIndicator) {
-                        $progressIndicator->setMessage('Processing: '.$row->valueOf('date_utc'));
+                        $progressIndicator->setMessage('Processing: ' . $row->valueOf('date_utc'));
 
                         return $row;
                     }
@@ -122,7 +119,7 @@ class CommitsCommand extends Command
                     Expression::on(['sha' => 'sha'], 'details_')
                 )
                 ->partitionBy(ref('date_utc'), ref('pr'))
-                ->write(to_json(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/commit"))
+                ->write(to_json($this->paths->commit($org, $repository, Paths\Layer::RAW)))
                 // Execute
                 ->run();
         }
@@ -130,7 +127,7 @@ class CommitsCommand extends Command
 
         $stopwatch->stop($this->getName());
 
-        $io->success('Done in '.\number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2).'s');
+        $io->success('Done in ' . \number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2) . 's');
 
         return Command::SUCCESS;
     }
