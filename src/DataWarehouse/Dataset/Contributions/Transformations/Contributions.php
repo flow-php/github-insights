@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Dataset\Contributions\Transformations;
+namespace App\DataWarehouse\Dataset\Contributions\Transformations;
 
-use App\Dataset\Contributions\DataFrameFactory\ContributionsFactory;
+use App\DataWarehouse\Dataset\Contributions\DataFrameFactory\ContributionsFactory;
+use App\DataWarehouse\Paths;
 use Flow\ETL\Join\Expression;
-use Flow\ETL\Partition\CallableFilter;
-use Flow\ETL\{DataFrame, Partition, Transformation};
+use Flow\ETL\{DataFrame, Function\Between\Boundary, Partition, Transformation};
 
 use function Flow\ETL\DSL\{lit, not, ref};
 
@@ -15,27 +15,26 @@ final class Contributions implements Transformation
         private readonly int $year,
         private readonly string $org,
         private readonly string $repository,
-        private readonly string $warehousePath,
+        private readonly Paths $paths,
     ) {
     }
 
     public function transform(DataFrame $dataFrame): DataFrame
     {
-        $yearStart = new \DateTimeImmutable($this->year.'-01-01 00:00:00');
-        $yearEnd = new \DateTimeImmutable($this->year.'-12-31 23:59:59');
+        $yearStart = new \DateTimeImmutable($this->year . '-01-01 00:00:00');
+        $yearEnd = new \DateTimeImmutable($this->year . '-12-31 23:59:59');
 
-        return $dataFrame->filterPartitions(
-            new CallableFilter(
-                fn (Partition $partition) => new \DateTimeImmutable($partition->value) >= $yearStart && new \DateTimeImmutable($partition->value) <= $yearEnd
+        return $dataFrame
+            ->filterPartitions(
+                ref('date_utc')->cast('date')->between(lit($yearStart), lit($yearEnd), Boundary::INCLUSIVE)
             )
-        )
             ->filter(ref('merged_at')->isNotNull())
             ->withEntry('user_login', ref('user')->arrayGet('login'))
             ->withEntry('user_avatar', ref('user')->arrayGet('avatar_url'))
             ->select('number', 'date_utc', 'user_login', 'user_avatar')
             ->batchSize(10)
             ->joinEach(
-                new ContributionsFactory($this->org, $this->repository, $this->warehousePath),
+                new ContributionsFactory($this->org, $this->repository, $this->paths),
                 Expression::on(['number' => 'pr'], 'contribution_'),
             )
             ->filter(not(ref('user_login')->isIn(lit(['dependabot[bot]']))))

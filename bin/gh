@@ -1,16 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-use App\Command;
-use App\Kernel;
+use App\DataWarehouse\Paths;
+use App\{Command, Kernel};
 use Flow\ETL\Config;
 use Symfony\Component\Console\Application;
 
-if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
+if (!is_file(dirname(__DIR__) . '/vendor/autoload_runtime.php')) {
     throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
 }
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
 return function (array $context) {
     $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
@@ -20,33 +20,18 @@ return function (array $context) {
         \mkdir($kernel->getCacheDir() . '/flow-php', recursive: true);
     }
 
-    putenv(Config::CACHE_DIR_ENV . '='.$kernel->getCacheDir() . '/flow-php');
+    putenv(Config::CACHE_DIR_ENV . '=' . $kernel->getCacheDir() . '/flow-php');
 
-    $app = new Application("GitHub Insights");
-    $app->add(
-        new Command\Fetch\PullRequestsCommand(
-            $kernel->getContainer()->getParameter('gh.token'),
-            $kernel->getContainer()->getParameter('data.warehouse.dir'),
-        )
-    );
-    $app->add(
-        new Command\Fetch\CommitsCommand(
-            $kernel->getContainer()->getParameter('gh.token'),
-            $kernel->getContainer()->getParameter('data.warehouse.dir'),
-        )
-    );
-    $app->add(
-        new Command\Fetch\UserPublicEventsCommand(
-            $kernel->getContainer()->getParameter('gh.token'),
-            $kernel->getContainer()->getParameter('data.warehouse.dir'),
-        )
-    );
-    $app->add(
-        new Command\Aggregate\ContributionsCommand(
-            $kernel->getContainer()->getParameter('data.warehouse.dir'),
-            $kernel->getContainer()->getParameter('kernel.project_dir').'/templates',
-        )
-    );
+    $app = new Application('GitHub Insights');
+    $warehousePath = $kernel->getContainer()->getParameter('data.warehouse.dir');
+    $paths = new Paths($warehousePath);
+    $ghToken = $kernel->getContainer()->getParameter('gh.token');
+
+    $app->add(new Command\Fetch\PullRequestsCommand($ghToken, $paths));
+    $app->add(new Command\Fetch\CommitsCommand($ghToken, $paths));
+    $app->add(new Command\Fetch\UserPublicEventsCommand($ghToken, $paths));
+    $app->add(new Command\Aggregate\ContributionsCommand($paths, $kernel->getContainer()->getParameter('kernel.project_dir') . '/templates'));
+    $app->add(new Command\Clean\PullRequestsCommand($paths));
 
     return $app;
 };

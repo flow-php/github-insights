@@ -2,6 +2,7 @@
 
 namespace App\Command\Fetch;
 
+use App\DataWarehouse\Paths;
 use App\Factory\GitHub\UserPublicEventsFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\Filesystem\SaveMode;
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 use function Flow\ETL\Adapter\JSON\to_json;
-use function Flow\ETL\DSL\{data_frame, lit, ref, to_output};
+use function Flow\ETL\DSL\{data_frame, ref};
 
 #[AsCommand(
     name: 'fetch:user:events:public',
@@ -28,14 +29,10 @@ class UserPublicEventsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
-        private readonly string $warehousePath,
+        private readonly Paths $paths,
     ) {
         if ('' === $token) {
             throw new \InvalidArgumentException('GitHub API Token must be provided.');
-        }
-
-        if (!file_exists($this->warehousePath)) {
-            \mkdir($this->warehousePath, recursive: true);
         }
 
         parent::__construct();
@@ -61,7 +58,7 @@ class UserPublicEventsCommand extends Command
             $afterDate = new \DateTimeImmutable($input->getOption('after_date'), new \DateTimeZone('UTC'));
             $afterDate->setTime(0, 0, 0);
         } catch (\Exception $e) {
-            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: '.$input->getOption('after_date'));
+            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: ' . $input->getOption('after_date'));
 
             return Command::FAILURE;
         }
@@ -92,24 +89,22 @@ class UserPublicEventsCommand extends Command
             ->withEntry('date_utc', ref('created_at')->toDateTime(\DATE_ATOM)->dateFormat())
             ->transform(new CallbackRowTransformer(
                 function (Row $row) use ($progressIndicator) {
-                    $progressIndicator->setMessage('Processing: '.$row->valueOf('date_utc'));
+                    $progressIndicator->setMessage('Processing: ' . $row->valueOf('date_utc'));
 
                     return $row;
                 }
             ))
-            // stop fetching data after given date
-//            ->until(ref('created_at')->toDateTime(\DATE_ATOM)->greaterThanEqual(lit($afterDate)))
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(to_json(rtrim($this->warehousePath, '/')."/user/{$username}/events"))
+            ->write(to_json($this->paths->userEvents($username, Paths\Layer::RAW)))
             // Execute
             ->run();
         $progressIndicator->finish('User public events fetched!');
 
         $stopwatch->stop($this->getName());
 
-        $io->success('Done in '.\number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2).'s');
+        $io->success('Done in ' . \number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2) . 's');
 
         return Command::SUCCESS;
     }

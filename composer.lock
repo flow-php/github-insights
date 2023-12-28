@@ -4,27 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "747847c6fe415ecb3ef71788ccfa913e",
+    "content-hash": "8ea8a5007ea2573f6086d018b801e1d7",
     "packages": [
         {
             "name": "clue/stream-filter",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/stream-filter.git",
-                "reference": "d6169430c7731d8509da7aecd0af756a5747b78e"
+                "reference": "049509fef80032cb3f051595029ab75b49a3c2f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/stream-filter/zipball/d6169430c7731d8509da7aecd0af756a5747b78e",
-                "reference": "d6169430c7731d8509da7aecd0af756a5747b78e",
+                "url": "https://api.github.com/repos/clue/stream-filter/zipball/049509fef80032cb3f051595029ab75b49a3c2f7",
+                "reference": "049509fef80032cb3f051595029ab75b49a3c2f7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8.36"
+                "phpunit/phpunit": "^9.6 || ^5.7 || ^4.8.36"
             },
             "type": "library",
             "autoload": {
@@ -46,7 +46,7 @@
                 }
             ],
             "description": "A simple and modern approach to stream filtering in PHP",
-            "homepage": "https://github.com/clue/php-stream-filter",
+            "homepage": "https://github.com/clue/stream-filter",
             "keywords": [
                 "bucket brigade",
                 "callback",
@@ -58,7 +58,7 @@
             ],
             "support": {
                 "issues": "https://github.com/clue/stream-filter/issues",
-                "source": "https://github.com/clue/stream-filter/tree/v1.6.0"
+                "source": "https://github.com/clue/stream-filter/tree/v1.7.0"
             },
             "funding": [
                 {
@@ -70,11 +70,11 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-21T13:15:14+00:00"
+            "time": "2023-12-20T15:40:13+00:00"
         },
         {
             "name": "flow-php/array-dot",
-            "version": "0.5.0",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/array-dot.git",
@@ -116,22 +116,22 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/array-dot/issues",
-                "source": "https://github.com/flow-php/array-dot/tree/0.5.0"
+                "source": "https://github.com/flow-php/array-dot/tree/0.5.2"
             },
             "time": "2023-11-30T22:14:32+00:00"
         },
         {
             "name": "flow-php/dremel",
-            "version": "0.5.0",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/dremel.git",
-                "reference": "c5e07b7ddb1e2d8759bad53964b326044f9ca39d"
+                "reference": "09228ca4cb58edb5a1fa734ba4a6569b4f66b7a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/dremel/zipball/c5e07b7ddb1e2d8759bad53964b326044f9ca39d",
-                "reference": "c5e07b7ddb1e2d8759bad53964b326044f9ca39d",
+                "url": "https://api.github.com/repos/flow-php/dremel/zipball/09228ca4cb58edb5a1fa734ba4a6569b4f66b7a8",
+                "reference": "09228ca4cb58edb5a1fa734ba4a6569b4f66b7a8",
                 "shasum": ""
             },
             "require": {
@@ -161,29 +161,29 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/dremel/issues",
-                "source": "https://github.com/flow-php/dremel/tree/0.5.0"
+                "source": "https://github.com/flow-php/dremel/tree/0.5.2"
             },
-            "time": "2023-11-30T22:14:28+00:00"
+            "time": "2023-12-03T00:55:13+00:00"
         },
         {
             "name": "flow-php/etl",
-            "version": "0.5.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl.git",
-                "reference": "acdb1e987abd39a83b2a0978cdd457819bec7e8d"
+                "reference": "7aad3fa4b511aeb1957506b744d9b0fa6f2dd0d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl/zipball/acdb1e987abd39a83b2a0978cdd457819bec7e8d",
-                "reference": "acdb1e987abd39a83b2a0978cdd457819bec7e8d",
+                "url": "https://api.github.com/repos/flow-php/etl/zipball/7aad3fa4b511aeb1957506b744d9b0fa6f2dd0d2",
+                "reference": "7aad3fa4b511aeb1957506b744d9b0fa6f2dd0d2",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "flow-php/array-dot": "^0.5.0 || 1.x-dev",
-                "php": "~8.1 || ~8.2 || ~8.3",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
                 "webmozart/glob": "^3.0 || ^4.0"
             },
@@ -199,6 +199,7 @@
                 "moneyphp/money": "Provides MoneyParser that is required by ToMoney scalar function",
                 "ramsey/uuid": "Provides scalar function `uuid_v4` and `uuid_v7` that allow generate uuid entry"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "aws/aws-sdk-php": [
@@ -228,28 +229,29 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl/issues",
-                "source": "https://github.com/flow-php/etl/tree/0.5.0"
+                "source": "https://github.com/flow-php/etl/tree/1.x"
             },
-            "time": "2023-11-30T22:54:53+00:00"
+            "time": "2023-12-28T20:51:34+00:00"
         },
         {
             "name": "flow-php/etl-adapter-chartjs",
-            "version": "0.5.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-chartjs.git",
-                "reference": "ae0a7406696eab81648c24cfede2fbc8772b6449"
+                "reference": "b82feb509cf82a9791956a1e8bc875285e3c321d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-chartjs/zipball/ae0a7406696eab81648c24cfede2fbc8772b6449",
-                "reference": "ae0a7406696eab81648c24cfede2fbc8772b6449",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-chartjs/zipball/b82feb509cf82a9791956a1e8bc875285e3c321d",
+                "reference": "b82feb509cf82a9791956a1e8bc875285e3c321d",
                 "shasum": ""
             },
             "require": {
                 "flow-php/etl": "^0.5.0 || 1.x-dev",
-                "php": "~8.1 || ~8.2 || ~8.3"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -276,28 +278,29 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-chartjs/issues",
-                "source": "https://github.com/flow-php/etl-adapter-chartjs/tree/0.5.0"
+                "source": "https://github.com/flow-php/etl-adapter-chartjs/tree/1.x"
             },
-            "time": "2023-11-30T22:54:51+00:00"
+            "time": "2023-12-19T12:57:33+00:00"
         },
         {
             "name": "flow-php/etl-adapter-csv",
-            "version": "0.5.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-csv.git",
-                "reference": "2352ac834e892663f9b6084e9fde9308187e68f3"
+                "reference": "5e46f12120e0c50a74688b1c2907e4098b8dcd08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-csv/zipball/2352ac834e892663f9b6084e9fde9308187e68f3",
-                "reference": "2352ac834e892663f9b6084e9fde9308187e68f3",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-csv/zipball/5e46f12120e0c50a74688b1c2907e4098b8dcd08",
+                "reference": "5e46f12120e0c50a74688b1c2907e4098b8dcd08",
                 "shasum": ""
             },
             "require": {
                 "flow-php/etl": "^0.5.0 || 1.x-dev",
-                "php": "~8.1 || ~8.2 || ~8.3"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -324,34 +327,90 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-csv/issues",
-                "source": "https://github.com/flow-php/etl-adapter-csv/tree/0.5.0"
+                "source": "https://github.com/flow-php/etl-adapter-csv/tree/1.x"
             },
-            "time": "2023-11-30T22:54:51+00:00"
+            "time": "2023-12-28T19:26:03+00:00"
         },
         {
-            "name": "flow-php/etl-adapter-http",
-            "version": "0.5.0",
+            "name": "flow-php/etl-adapter-filesystem",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/flow-php/etl-adapter-http.git",
-                "reference": "59265670ff2b8d4ec63f272faf46dcb7fff999fd"
+                "url": "https://github.com/flow-php/etl-adapter-filesystem.git",
+                "reference": "9c1064233a4aa03987d15a1b1b6ed4a9e659800c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-http/zipball/59265670ff2b8d4ec63f272faf46dcb7fff999fd",
-                "reference": "59265670ff2b8d4ec63f272faf46dcb7fff999fd",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-filesystem/zipball/9c1064233a4aa03987d15a1b1b6ed4a9e659800c",
+                "reference": "9c1064233a4aa03987d15a1b1b6ed4a9e659800c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "flow-php/etl": "^0.5.0 || 1.x-dev",
-                "php": "~8.1 || ~8.2 || ~8.3",
+                "league/flysystem": "^3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
+            },
+            "require-dev": {
+                "league/flysystem-aws-s3-v3": "^3.0",
+                "league/flysystem-azure-blob-storage": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Flow/ETL/Adapter/Filesystem/functions.php"
+                ],
+                "psr-4": {
+                    "Flow\\": [
+                        "src/Flow"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP ETL - Adapter - Filesystem",
+            "keywords": [
+                "adapter",
+                "etl",
+                "extract",
+                "load",
+                "parquet",
+                "transform"
+            ],
+            "support": {
+                "issues": "https://github.com/flow-php/etl-adapter-filesystem/issues",
+                "source": "https://github.com/flow-php/etl-adapter-filesystem/tree/1.x"
+            },
+            "time": "2023-12-28T19:26:07+00:00"
+        },
+        {
+            "name": "flow-php/etl-adapter-http",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flow-php/etl-adapter-http.git",
+                "reference": "9230cad434ade14da2463e80350119ba7b2f11d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-http/zipball/9230cad434ade14da2463e80350119ba7b2f11d3",
+                "reference": "9230cad434ade14da2463e80350119ba7b2f11d3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "flow-php/etl": "^0.5.0 || 1.x-dev",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "psr/http-client": "^1.0"
             },
             "require-dev": {
                 "nyholm/psr7": "^1.8",
                 "php-http/curl-client": "^2.2"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -374,30 +433,31 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-http/issues",
-                "source": "https://github.com/flow-php/etl-adapter-http/tree/0.5.0"
+                "source": "https://github.com/flow-php/etl-adapter-http/tree/1.x"
             },
-            "time": "2023-11-30T22:54:52+00:00"
+            "time": "2023-12-19T12:57:35+00:00"
         },
         {
             "name": "flow-php/etl-adapter-json",
-            "version": "0.5.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-json.git",
-                "reference": "4247abed33c554919576f02d6e5423ffce832d61"
+                "reference": "a2c550c4cf5692abdd9672f664b13affb22a502c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-json/zipball/4247abed33c554919576f02d6e5423ffce832d61",
-                "reference": "4247abed33c554919576f02d6e5423ffce832d61",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-json/zipball/a2c550c4cf5692abdd9672f664b13affb22a502c",
+                "reference": "a2c550c4cf5692abdd9672f664b13affb22a502c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "flow-php/etl": "^0.5.0 || 1.x-dev",
                 "halaxa/json-machine": "^1.0",
-                "php": "~8.1 || ~8.2 || ~8.3"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -424,30 +484,31 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-json/issues",
-                "source": "https://github.com/flow-php/etl-adapter-json/tree/0.5.0"
+                "source": "https://github.com/flow-php/etl-adapter-json/tree/1.x"
             },
-            "time": "2023-11-30T22:54:54+00:00"
+            "time": "2023-12-28T19:26:05+00:00"
         },
         {
             "name": "flow-php/etl-adapter-parquet",
-            "version": "0.5.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-parquet.git",
-                "reference": "573e4c270018fd899a2582f13c0437aa1e6a385e"
+                "reference": "67b011e4c6ee91b46b9fc6d346416db17663e423"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-parquet/zipball/573e4c270018fd899a2582f13c0437aa1e6a385e",
-                "reference": "573e4c270018fd899a2582f13c0437aa1e6a385e",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-parquet/zipball/67b011e4c6ee91b46b9fc6d346416db17663e423",
+                "reference": "67b011e4c6ee91b46b9fc6d346416db17663e423",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "flow-php/etl": "^0.5.0 || 1.x-dev",
                 "flow-php/parquet": "^0.5.0 || 1.x-dev",
-                "php": "~8.1 || ~8.2 || ~8.3"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -474,22 +535,22 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/etl-adapter-parquet/issues",
-                "source": "https://github.com/flow-php/etl-adapter-parquet/tree/0.5.0"
+                "source": "https://github.com/flow-php/etl-adapter-parquet/tree/1.x"
             },
-            "time": "2023-11-30T22:54:52+00:00"
+            "time": "2023-12-28T19:26:04+00:00"
         },
         {
             "name": "flow-php/parquet",
-            "version": "0.5.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/parquet.git",
-                "reference": "8240cb98a59273d7686463369709380752a7d1d5"
+                "reference": "ebddd55be24627f7017186c120de924510a4f704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/parquet/zipball/8240cb98a59273d7686463369709380752a7d1d5",
-                "reference": "8240cb98a59273d7686463369709380752a7d1d5",
+                "url": "https://api.github.com/repos/flow-php/parquet/zipball/ebddd55be24627f7017186c120de924510a4f704",
+                "reference": "ebddd55be24627f7017186c120de924510a4f704",
                 "shasum": ""
             },
             "require": {
@@ -499,8 +560,9 @@
                 "flow-php/dremel": "^0.5.0 || 1.x-dev",
                 "flow-php/snappy": "^0.5.0 || 1.x-dev",
                 "packaged/thrift": "^0.15.0",
-                "php": "~8.1 || ~8.2 || ~8.3"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -527,22 +589,22 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/parquet/issues",
-                "source": "https://github.com/flow-php/parquet/tree/0.5.0"
+                "source": "https://github.com/flow-php/parquet/tree/1.x"
             },
-            "time": "2023-11-30T22:55:10+00:00"
+            "time": "2023-12-28T20:21:54+00:00"
         },
         {
             "name": "flow-php/snappy",
-            "version": "0.5.0",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/snappy.git",
-                "reference": "bffaa2a1969b39bc530c967445a6e0effb78855c"
+                "reference": "e919d337bef002a30782bd176fe267fb05fe11e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/snappy/zipball/bffaa2a1969b39bc530c967445a6e0effb78855c",
-                "reference": "bffaa2a1969b39bc530c967445a6e0effb78855c",
+                "url": "https://api.github.com/repos/flow-php/snappy/zipball/e919d337bef002a30782bd176fe267fb05fe11e9",
+                "reference": "e919d337bef002a30782bd176fe267fb05fe11e9",
                 "shasum": ""
             },
             "require": {
@@ -551,7 +613,7 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "polifil.php"
+                    "polyfill.php"
                 ],
                 "psr-4": {
                     "Flow\\": [
@@ -576,9 +638,9 @@
             ],
             "support": {
                 "issues": "https://github.com/flow-php/snappy/issues",
-                "source": "https://github.com/flow-php/snappy/tree/0.5.0"
+                "source": "https://github.com/flow-php/snappy/tree/0.5.2"
             },
-            "time": "2023-11-30T22:55:09+00:00"
+            "time": "2023-12-01T17:42:25+00:00"
         },
         {
             "name": "halaxa/json-machine",
@@ -638,6 +700,212 @@
                 }
             ],
             "time": "2023-11-28T21:12:40+00:00"
+        },
+        {
+            "name": "league/flysystem",
+            "version": "3.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem.git",
+                "reference": "d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc",
+                "reference": "d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem-local": "^3.0.0",
+                "league/mime-type-detection": "^1.0.0",
+                "php": "^8.0.2"
+            },
+            "conflict": {
+                "async-aws/core": "<1.19.0",
+                "async-aws/s3": "<1.14.0",
+                "aws/aws-sdk-php": "3.209.31 || 3.210.0",
+                "guzzlehttp/guzzle": "<7.0",
+                "guzzlehttp/ringphp": "<1.1.1",
+                "phpseclib/phpseclib": "3.0.15",
+                "symfony/http-client": "<5.2"
+            },
+            "require-dev": {
+                "async-aws/s3": "^1.5 || ^2.0",
+                "async-aws/simple-s3": "^1.1 || ^2.0",
+                "aws/aws-sdk-php": "^3.220.0",
+                "composer/semver": "^3.0",
+                "ext-fileinfo": "*",
+                "ext-ftp": "*",
+                "ext-zip": "*",
+                "friendsofphp/php-cs-fixer": "^3.5",
+                "google/cloud-storage": "^1.23",
+                "microsoft/azure-storage-blob": "^1.1",
+                "phpseclib/phpseclib": "^3.0.34",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5.11|^10.0",
+                "sabre/dav": "^4.3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "File storage abstraction for PHP",
+            "keywords": [
+                "WebDAV",
+                "aws",
+                "cloud",
+                "file",
+                "files",
+                "filesystem",
+                "filesystems",
+                "ftp",
+                "s3",
+                "sftp",
+                "storage"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem/issues",
+                "source": "https://github.com/thephpleague/flysystem/tree/3.23.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ecologi.com/frankdejonge",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-04T10:16:17+00:00"
+        },
+        {
+            "name": "league/flysystem-local",
+            "version": "3.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-local.git",
+                "reference": "5cf046ba5f059460e86a997c504dd781a39a109b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/5cf046ba5f059460e86a997c504dd781a39a109b",
+                "reference": "5cf046ba5f059460e86a997c504dd781a39a109b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "league/flysystem": "^3.0.0",
+                "league/mime-type-detection": "^1.0.0",
+                "php": "^8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Local\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Local filesystem adapter for Flysystem.",
+            "keywords": [
+                "Flysystem",
+                "file",
+                "files",
+                "filesystem",
+                "local"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem-local/issues",
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.23.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ecologi.com/frankdejonge",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-04T10:14:46+00:00"
+        },
+        {
+            "name": "league/mime-type-detection",
+            "version": "1.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/mime-type-detection.git",
+                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/b6a5854368533df0295c5761a0253656a2e52d9e",
+                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "phpstan/phpstan": "^0.12.68",
+                "phpunit/phpunit": "^8.5.8 || ^9.3 || ^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\MimeTypeDetection\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Mime-type detection for Flysystem",
+            "support": {
+                "issues": "https://github.com/thephpleague/mime-type-detection/issues",
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.14.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/league/flysystem",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-10-17T14:13:20+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -1829,16 +2097,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v6.3.8",
+            "version": "v6.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "1f30f545c4151f611148fc19e28d54d39e0a00bc"
+                "reference": "51383a1d9d7e93d5c3c76ddc32672de1b3e82c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/1f30f545c4151f611148fc19e28d54d39e0a00bc",
-                "reference": "1f30f545c4151f611148fc19e28d54d39e0a00bc",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/51383a1d9d7e93d5c3c76ddc32672de1b3e82c77",
+                "reference": "51383a1d9d7e93d5c3c76ddc32672de1b3e82c77",
                 "shasum": ""
             },
             "require": {
@@ -1890,7 +2158,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v6.3.8"
+                "source": "https://github.com/symfony/dependency-injection/tree/v6.3.10"
             },
             "funding": [
                 {
@@ -1906,7 +2174,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-31T08:07:48+00:00"
+            "time": "2023-12-01T14:25:58+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2408,16 +2676,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v2.4.1",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "ae6dea68771c5fca9d172e0c0910bdd06199f6f4"
+                "reference": "67ee785f1aedada76461de7a7ec10cd7f8ff8d36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/ae6dea68771c5fca9d172e0c0910bdd06199f6f4",
-                "reference": "ae6dea68771c5fca9d172e0c0910bdd06199f6f4",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/67ee785f1aedada76461de7a7ec10cd7f8ff8d36",
+                "reference": "67ee785f1aedada76461de7a7ec10cd7f8ff8d36",
                 "shasum": ""
             },
             "require": {
@@ -2453,7 +2721,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v2.4.1"
+                "source": "https://github.com/symfony/flex/tree/v2.4.2"
             },
             "funding": [
                 {
@@ -2469,7 +2737,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-30T18:35:17+00:00"
+            "time": "2023-12-05T14:09:35+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -2694,16 +2962,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v6.3.9",
+            "version": "v6.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "d63fe6b1e3ad2f037f6f000a6fc867fa8934f35c"
+                "reference": "8d8e7aa60593fd0a2e3c1cea08cc687314841b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/d63fe6b1e3ad2f037f6f000a6fc867fa8934f35c",
-                "reference": "d63fe6b1e3ad2f037f6f000a6fc867fa8934f35c",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/8d8e7aa60593fd0a2e3c1cea08cc687314841b61",
+                "reference": "8d8e7aa60593fd0a2e3c1cea08cc687314841b61",
                 "shasum": ""
             },
             "require": {
@@ -2787,7 +3055,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v6.3.9"
+                "source": "https://github.com/symfony/http-kernel/tree/v6.3.10"
             },
             "funding": [
                 {
@@ -2803,7 +3071,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-29T10:24:27+00:00"
+            "time": "2023-12-01T16:57:27+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -3202,16 +3470,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v6.3.5",
+            "version": "v6.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "82616e59acd3e3d9c916bba798326cb7796d7d31"
+                "reference": "cb7404232d49dd11cc971b832fcbd49e7c22b049"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/82616e59acd3e3d9c916bba798326cb7796d7d31",
-                "reference": "82616e59acd3e3d9c916bba798326cb7796d7d31",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/cb7404232d49dd11cc971b832fcbd49e7c22b049",
+                "reference": "cb7404232d49dd11cc971b832fcbd49e7c22b049",
                 "shasum": ""
             },
             "require": {
@@ -3265,7 +3533,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v6.3.5"
+                "source": "https://github.com/symfony/routing/tree/v6.3.10"
             },
             "funding": [
                 {
@@ -3281,7 +3549,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-20T16:05:51+00:00"
+            "time": "2023-12-01T14:25:58+00:00"
         },
         {
             "name": "symfony/runtime",
@@ -3364,21 +3632,21 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "b3313c2dbffaf71c8de2934e2ea56ed2291a3838"
+                "reference": "fe07cbc8d837f60caf7018068e350cc5163681a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/b3313c2dbffaf71c8de2934e2ea56ed2291a3838",
-                "reference": "b3313c2dbffaf71c8de2934e2ea56ed2291a3838",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/fe07cbc8d837f60caf7018068e350cc5163681a0",
+                "reference": "fe07cbc8d837f60caf7018068e350cc5163681a0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1",
-                "psr/container": "^2.0"
+                "psr/container": "^1.1|^2.0"
             },
             "conflict": {
                 "ext-psr": "<1.1|>=2"
@@ -3426,7 +3694,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v3.4.0"
+                "source": "https://github.com/symfony/service-contracts/tree/v3.4.1"
             },
             "funding": [
                 {
@@ -3442,7 +3710,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-30T20:28:31+00:00"
+            "time": "2023-12-26T14:02:43+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -3659,16 +3927,16 @@
         },
         {
             "name": "symfony/translation-contracts",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "dee0c6e5b4c07ce851b462530088e64b255ac9c5"
+                "reference": "06450585bf65e978026bda220cdebca3f867fde7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/dee0c6e5b4c07ce851b462530088e64b255ac9c5",
-                "reference": "dee0c6e5b4c07ce851b462530088e64b255ac9c5",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/06450585bf65e978026bda220cdebca3f867fde7",
+                "reference": "06450585bf65e978026bda220cdebca3f867fde7",
                 "shasum": ""
             },
             "require": {
@@ -3717,7 +3985,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/translation-contracts/tree/v3.4.0"
+                "source": "https://github.com/symfony/translation-contracts/tree/v3.4.1"
             },
             "funding": [
                 {
@@ -3733,7 +4001,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-25T15:08:44+00:00"
+            "time": "2023-12-26T14:02:43+00:00"
         },
         {
             "name": "symfony/twig-bridge",
@@ -4014,16 +4282,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v6.3.9",
+            "version": "v6.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "a00fd2d47af5c95e95e8e371a74be2e79b95dfae"
+                "reference": "7bfcf232a9c7e4acad00e96774e340eb86d10bf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/a00fd2d47af5c95e95e8e371a74be2e79b95dfae",
-                "reference": "a00fd2d47af5c95e95e8e371a74be2e79b95dfae",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/7bfcf232a9c7e4acad00e96774e340eb86d10bf0",
+                "reference": "7bfcf232a9c7e4acad00e96774e340eb86d10bf0",
                 "shasum": ""
             },
             "require": {
@@ -4068,7 +4336,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v6.3.9"
+                "source": "https://github.com/symfony/var-exporter/tree/v6.3.10"
             },
             "funding": [
                 {
@@ -4084,7 +4352,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-28T20:34:48+00:00"
+            "time": "2023-11-29T16:00:50+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -4666,16 +4934,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.40.0",
+            "version": "v3.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "27d2b3265b5d550ec411b4319967ae7cfddfb2e0"
+                "reference": "39b5632c39ca9deb4eb7e670ba96fcf5c3a72e3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/27d2b3265b5d550ec411b4319967ae7cfddfb2e0",
-                "reference": "27d2b3265b5d550ec411b4319967ae7cfddfb2e0",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/39b5632c39ca9deb4eb7e670ba96fcf5c3a72e3c",
+                "reference": "39b5632c39ca9deb4eb7e670ba96fcf5c3a72e3c",
                 "shasum": ""
             },
             "require": {
@@ -4705,10 +4973,7 @@
                 "php-cs-fixer/accessible-object": "^1.1",
                 "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.4",
                 "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.4",
-                "phpspec/prophecy": "^1.17",
-                "phpspec/prophecy-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.6",
-                "symfony/phpunit-bridge": "^6.3.8 || ^7.0",
+                "phpunit/phpunit": "^9.6 || ^10.5.5",
                 "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
             },
             "suggest": {
@@ -4747,7 +5012,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.40.0"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.43.0"
             },
             "funding": [
                 {
@@ -4755,20 +5020,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-26T09:25:53+00:00"
+            "time": "2023-12-28T17:36:39+00:00"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.17.1",
+            "version": "v4.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "a6303e50c90c355c7eeee2c4a8b27fe8dc8fef1d"
+                "reference": "1bcbb2179f97633e98bbbc87044ee2611c7d7999"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/a6303e50c90c355c7eeee2c4a8b27fe8dc8fef1d",
-                "reference": "a6303e50c90c355c7eeee2c4a8b27fe8dc8fef1d",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1bcbb2179f97633e98bbbc87044ee2611c7d7999",
+                "reference": "1bcbb2179f97633e98bbbc87044ee2611c7d7999",
                 "shasum": ""
             },
             "require": {
@@ -4809,22 +5074,22 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.17.1"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.18.0"
             },
-            "time": "2023-08-13T19:53:39+00:00"
+            "time": "2023-12-10T21:03:43+00:00"
         },
         {
             "name": "sebastian/diff",
-            "version": "5.0.3",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "912dc2fbe3e3c1e7873313cc801b100b6c68c87b"
+                "reference": "fbf413a49e54f6b9b17e12d900ac7f6101591b7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/912dc2fbe3e3c1e7873313cc801b100b6c68c87b",
-                "reference": "912dc2fbe3e3c1e7873313cc801b100b6c68c87b",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/fbf413a49e54f6b9b17e12d900ac7f6101591b7f",
+                "reference": "fbf413a49e54f6b9b17e12d900ac7f6101591b7f",
                 "shasum": ""
             },
             "require": {
@@ -4837,7 +5102,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "5.0-dev"
+                    "dev-main": "5.1-dev"
                 }
             },
             "autoload": {
@@ -4870,7 +5135,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/diff/issues",
                 "security": "https://github.com/sebastianbergmann/diff/security/policy",
-                "source": "https://github.com/sebastianbergmann/diff/tree/5.0.3"
+                "source": "https://github.com/sebastianbergmann/diff/tree/5.1.0"
             },
             "funding": [
                 {
@@ -4878,7 +5143,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-01T07:48:21+00:00"
+            "time": "2023-12-22T10:55:06+00:00"
         },
         {
             "name": "symfony/maker-bundle",
@@ -5036,7 +5301,16 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "flow-php/etl": 20,
+        "flow-php/etl-adapter-chartjs": 20,
+        "flow-php/etl-adapter-csv": 20,
+        "flow-php/etl-adapter-filesystem": 20,
+        "flow-php/etl-adapter-http": 20,
+        "flow-php/etl-adapter-json": 20,
+        "flow-php/etl-adapter-parquet": 20,
+        "flow-php/parquet": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

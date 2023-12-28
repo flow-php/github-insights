@@ -2,6 +2,7 @@
 
 namespace App\Command\Fetch;
 
+use App\DataWarehouse\Paths;
 use App\Factory\GitHub\PullRequestsFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\Filesystem\SaveMode;
@@ -29,14 +30,10 @@ class PullRequestsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
-        private readonly string $warehousePath,
+        private readonly Paths $paths
     ) {
         if ('' === $token) {
             throw new \InvalidArgumentException('GitHub API Token must be provided.');
-        }
-
-        if (!file_exists($this->warehousePath)) {
-            \mkdir($this->warehousePath, recursive: true);
         }
 
         parent::__construct();
@@ -59,10 +56,11 @@ class PullRequestsCommand extends Command
 
         $org = $input->getArgument('org');
         $repository = $input->getArgument('repository');
+
         try {
             $afterDate = new \DateTimeImmutable($input->getOption('after_date'), new \DateTimeZone('UTC'));
         } catch (\Exception $e) {
-            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: '.$input->getOption('after_date'));
+            $io->error('Invalid date format, can\'t create DateTimeImmutable instance from: ' . $input->getOption('after_date'));
 
             return Command::FAILURE;
         }
@@ -93,7 +91,7 @@ class PullRequestsCommand extends Command
             ->withEntry('date_utc', ref('created_at')->toDateTime(\DATE_ATOM)->dateFormat())
             ->transform(new CallbackRowTransformer(
                 function (Row $row) use ($progressIndicator) {
-                    $progressIndicator->setMessage('Processing: '.$row->valueOf('date_utc'));
+                    $progressIndicator->setMessage('Processing: ' . $row->valueOf('date_utc'));
 
                     return $row;
                 }
@@ -103,14 +101,14 @@ class PullRequestsCommand extends Command
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(to_json(rtrim($this->warehousePath, '/')."/repo/{$org}/{$repository}/pr"))
+            ->write(to_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW)))
             // Execute
             ->run();
         $progressIndicator->finish('Pull requests fetched!');
 
         $stopwatch->stop($this->getName());
 
-        $io->success('Done in '.\number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2).'s');
+        $io->success('Done in ' . \number_format($stopwatch->getEvent($this->getName())->getDuration() / 1000, 2) . 's');
 
         return Command::SUCCESS;
     }
