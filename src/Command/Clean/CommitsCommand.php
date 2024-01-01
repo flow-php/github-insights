@@ -2,7 +2,7 @@
 
 namespace App\Command\Clean;
 
-use App\DataMesh\Dataset\Schema\PullRequestSchemaProvider;
+use App\DataMesh\Dataset\Schema\CommitSchemaProvider;
 use App\DataMesh\Paths;
 use Flow\ETL\Function\Between\Boundary;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,14 +14,13 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 use function Flow\ETL\Adapter\JSON\from_json;
 use function Flow\ETL\Adapter\Parquet\to_parquet;
-use function Flow\ETL\DSL\{df, list_ref, lit, overwrite, ref, structure_ref, when};
+use function Flow\ETL\DSL\{df, lit, overwrite, ref, structure_ref};
 
 #[AsCommand(
-    name: 'clean:pull-requests',
-    description: 'Read, clean and store pull requests at cleaned layer of data mesh',
-    aliases: ['clean:prs', 'clean:pr', 'clean:pull-request'],
+    name: 'clean:commits',
+    description: 'Read, clean and store commits at cleaned layer of data mesh',
 )]
-final class PullRequestsCommand extends Command
+final class CommitsCommand extends Command
 {
     public function __construct(
         private readonly Paths $paths,
@@ -44,7 +43,7 @@ final class PullRequestsCommand extends Command
         $stopwatch = new Stopwatch();
         $stopwatch->start($this->getName());
         $io = new SymfonyStyle($input, $output);
-        $io->title('Cleaning pull requests data');
+        $io->title('Cleaning commits data');
 
         $org = $input->getArgument('org');
         $repository = $input->getArgument('repository');
@@ -67,25 +66,21 @@ final class PullRequestsCommand extends Command
         }
 
         df()
-            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*'))
+            ->read(from_json($this->paths->commit($org, $repository, Paths\Layer::RAW) . '/date_utc=*/pr=*/*'))
             ->filterPartitions(
                 ref('date_utc')->cast('date')->between(lit($afterDate), lit($beforeDate), Boundary::INCLUSIVE)
             )
-            ->filter(ref('merged_at')->isNotNull())
-            ->select('url', 'id', 'node_id', 'number', 'state', 'locked', 'title', 'user', 'body', 'date_utc', 'created_at', 'updated_at', 'closed_at', 'merged_at', 'labels')
-            ->withEntry('user', structure_ref('user')->select('login', 'id', 'node_id', 'avatar_url', 'url', 'type', 'site_admin'))
-            ->withEntry('labels', list_ref('labels')->select('id', 'node_id', 'name', 'color', 'default'))
-            ->withEntry('created_at_utc', when(ref('created_at')->isNotNull(), ref('created_at')->cast('datetime'), lit(null)))
-            ->withEntry('updated_at_utc', when(ref('updated_at')->isNotNull(), ref('updated_at')->cast('datetime'), lit(null)))
-            ->withEntry('merged_at_utc', when(ref('merged_at')->isNotNull(), ref('merged_at')->cast('datetime'), lit(null)))
-            ->withEntry('closed_at_utc', when(ref('closed_at')->isNotNull(), ref('closed_at')->cast('datetime'), lit(null)))
+            ->select('sha', 'node_id', 'pr', 'details_stats', 'author', 'date_utc')
+            ->withEntry('details_stats', structure_ref('details_stats')->select('total', 'additions', 'deletions'))
+            ->withEntry('author', structure_ref('author')->select('login', 'id', 'node_id', 'avatar_url', 'type'))
             ->withEntry('date_utc', ref('date_utc')->cast('date'))
-            ->drop('created_at', 'merged_at', 'updated_at', 'closed_at')
+            // Remove commits from Bots
+            ->filter(ref('author')->arrayGet('type')->equals(lit('User')))
             ->collect()
-            ->validate($schema = (new PullRequestSchemaProvider())->clean())
+            ->validate($schema = (new CommitSchemaProvider())->clean())
             ->partitionBy(ref('date_utc'))
             ->mode(overwrite())
-            ->write(to_parquet($this->paths->pullRequests($org, $repository, Paths\Layer::CLEAN), schema: $schema))
+            ->write(to_parquet($this->paths->commit($org, $repository, Paths\Layer::CLEAN), schema: $schema))
             ->run();
 
         return Command::SUCCESS;

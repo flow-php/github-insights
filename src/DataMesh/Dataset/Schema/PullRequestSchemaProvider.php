@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataMesh\Dataset\Schema\Clean;
+namespace App\DataMesh\Dataset\Schema;
 
 use Flow\ETL\Row\Schema;
 
@@ -8,7 +8,7 @@ use function Flow\ETL\DSL\{bool_schema, datetime_schema, int_schema, list_schema
 
 final class PullRequestSchemaProvider
 {
-    public function schema(): Schema
+    public function clean(): Schema
     {
         return schema(
             str_schema('url'),

@@ -32,6 +32,7 @@ return function (array $context) {
     $app->add(new Command\Fetch\UserPublicEventsCommand($ghToken, $paths));
     $app->add(new Command\Aggregate\ContributionsCommand($paths, $kernel->getContainer()->getParameter('kernel.project_dir') . '/templates'));
     $app->add(new Command\Clean\PullRequestsCommand($paths));
+    $app->add(new Command\Clean\CommitsCommand($paths));
 
     return $app;
 };
