@@ -63,6 +63,7 @@
             "bin/gh fetch:pull-requests flow-php flow",
             "bin/gh clean:pull-requests flow-php flow",
             "bin/gh fetch:commits flow-php flow",
+            "bin/gh clean:commits flow-php flow",
             "bin/gh fetch:user:events:public norberttech",
             "bin/gh aggregate:contributions flow-php flow"
         ],
