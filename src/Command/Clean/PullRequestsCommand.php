@@ -2,9 +2,9 @@
 
 namespace App\Command\Clean;
 
-use App\DataWarehouse\Paths;
+use App\DataMesh\Dataset\Schema\Clean\PullRequestSchemaProvider;
+use App\DataMesh\Paths;
 use Flow\ETL\Function\Between\Boundary;
-use Flow\ETL\Loader\StreamLoader\Output;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\{InputArgument, InputInterface};
@@ -13,7 +13,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 use function Flow\ETL\Adapter\JSON\from_json;
-use function Flow\ETL\DSL\{all, data_frame, lit, ref, to_output};
+use function Flow\ETL\Adapter\Parquet\to_parquet;
+use function Flow\ETL\DSL\{df, list_ref, lit, overwrite, ref, structure_ref, when};
 
 #[AsCommand(
     name: 'clean:pull-requests',
@@ -65,14 +66,26 @@ final class PullRequestsCommand extends Command
             return Command::FAILURE;
         }
 
-        // @Todo: Finish moving pull requests from json to more reliable parquet files.
-        data_frame()
+        df()
             ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*'))
             ->filterPartitions(
                 ref('date_utc')->cast('date')->between(lit($afterDate), lit($beforeDate), Boundary::INCLUSIVE)
             )
+            ->filter(ref('merged_at')->isNotNull())
+            ->select('url', 'id', 'node_id', 'number', 'state', 'locked', 'title', 'user', 'body', 'date_utc', 'created_at', 'updated_at', 'closed_at', 'merged_at', 'labels')
+            ->withEntry('user', structure_ref('user')->select('login', 'id', 'node_id', 'avatar_url', 'url', 'type', 'site_admin'))
+            ->withEntry('labels', list_ref('labels')->select('id', 'node_id', 'name', 'color', 'default'))
+            ->withEntry('created_at_utc', when(ref('created_at')->isNotNull(), ref('created_at')->cast('datetime'), lit(null)))
+            ->withEntry('updated_at_utc', when(ref('updated_at')->isNotNull(), ref('updated_at')->cast('datetime'), lit(null)))
+            ->withEntry('merged_at_utc', when(ref('merged_at')->isNotNull(), ref('merged_at')->cast('datetime'), lit(null)))
+            ->withEntry('closed_at_utc', when(ref('closed_at')->isNotNull(), ref('closed_at')->cast('datetime'), lit(null)))
+            ->withEntry('date_utc', ref('date_utc')->cast('date'))
+            ->drop('created_at', 'merged_at', 'updated_at', 'closed_at')
             ->collect()
-            ->write(to_output(false, Output::schema))
+            ->validate($schema = (new PullRequestSchemaProvider())->schema())
+            ->partitionBy(ref('date_utc'))
+            ->mode(overwrite())
+            ->write(to_parquet($this->paths->pullRequests($org, $repository, Paths\Layer::CLEAN), schema: $schema))
             ->run();
 
         return Command::SUCCESS;

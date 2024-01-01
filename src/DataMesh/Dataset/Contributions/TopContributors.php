@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataWarehouse\Dataset\Contributions;
+namespace App\DataMesh\Dataset\Contributions;
 
-use App\DataWarehouse\Paths;
+use App\DataMesh\Paths;
 use Flow\ETL\Exception\InvalidArgumentException;
 
 use function Flow\ETL\Adapter\CSV\from_csv;

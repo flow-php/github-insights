@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use App\DataWarehouse\Paths;
+use App\DataMesh\Paths;
 use App\{Command, Kernel};
 use Flow\ETL\Config;
 use Symfony\Component\Console\Application;
@@ -23,7 +23,7 @@ return function (array $context) {
     putenv(Config::CACHE_DIR_ENV . '=' . $kernel->getCacheDir() . '/flow-php');
 
     $app = new Application('GitHub Insights');
-    $warehousePath = $kernel->getContainer()->getParameter('data.warehouse.dir');
+    $warehousePath = $kernel->getContainer()->getParameter('data.mesh.dir');
     $paths = new Paths($warehousePath);
     $ghToken = $kernel->getContainer()->getParameter('gh.token');
 

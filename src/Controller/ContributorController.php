@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\DataWarehouse\Dataset\Contributions\TopContributors;
-use App\DataWarehouse\Paths;
+use App\DataMesh\Dataset\Contributions\TopContributors;
+use App\DataMesh\Paths;
 use Flow\ETL\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

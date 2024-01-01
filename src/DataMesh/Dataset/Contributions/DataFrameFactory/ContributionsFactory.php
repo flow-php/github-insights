@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataWarehouse\Dataset\Contributions\DataFrameFactory;
+namespace App\DataMesh\Dataset\Contributions\DataFrameFactory;
 
-use App\DataWarehouse\Paths;
+use App\DataMesh\Paths;
 use Flow\ETL\DSL\{From, Json};
 use Flow\ETL\{DataFrame, DataFrameFactory, Flow, Function\Between\Boundary, Partition, Rows};
 

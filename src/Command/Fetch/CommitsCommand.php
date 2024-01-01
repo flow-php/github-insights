@@ -2,9 +2,9 @@
 
 namespace App\Command\Fetch;
 
-use App\DataWarehouse\Dataset\Commit\DataFrameFactory\CommitDetailsFactory;
-use App\DataWarehouse\Dataset\PullRequests\PullRequests;
-use App\DataWarehouse\Paths;
+use App\DataMesh\Dataset\Commit\DataFrameFactory\CommitDetailsFactory;
+use App\DataMesh\Dataset\PullRequests\PullRequests;
+use App\DataMesh\Paths;
 use App\Factory\GitHub\GenericUrlFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\Filesystem\SaveMode;
