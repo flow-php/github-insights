@@ -38,9 +38,9 @@ bin/gh aggregate:contributions flow-php flow --year=2023
 This will generate yearly report for a given org/repository and year. 
 
 ```console
-var/data/warehouse/dev/flow-php/flow/report/2023/daily_contributions.chart.json
-var/data/warehouse/dev/flow-php/flow/report/2023/daily_contributions.csv
-var/data/warehouse/dev/flow-php/flow/report/2023/top_contributors.csv
+var/data/mesh/dev/raw/org/flow-php/flow/repo/report/2023/daily_contributions.chart.json
+var/data/mesh/dev/raw/org/flow-php/flow/repo/report/2023/daily_contributions.csv
+var/data/mesh/dev/raw/org/flow-php/flow/repo/report/2023/top_contributors.csv
 ```
 
 Example of Daily Contributions Report:

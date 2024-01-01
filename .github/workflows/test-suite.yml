@@ -48,5 +48,5 @@ jobs:
         run: |
           echo '# Data Warehouse - Content' >> $GITHUB_STEP_SUMMARY
           echo '```console' >> $GITHUB_STEP_SUMMARY
-          tree -d var/data/warehouse >> $GITHUB_STEP_SUMMARY
+          tree -d var/data/mesh >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
