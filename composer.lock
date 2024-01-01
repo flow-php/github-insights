@@ -171,12 +171,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl.git",
-                "reference": "20b61a1e7f40ac3655a044c67b1593ec876d1f0d"
+                "reference": "217ffb6385a7809425d1974b565953d2ea9abacc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl/zipball/20b61a1e7f40ac3655a044c67b1593ec876d1f0d",
-                "reference": "20b61a1e7f40ac3655a044c67b1593ec876d1f0d",
+                "url": "https://api.github.com/repos/flow-php/etl/zipball/217ffb6385a7809425d1974b565953d2ea9abacc",
+                "reference": "217ffb6385a7809425d1974b565953d2ea9abacc",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +230,7 @@
                 "issues": "https://github.com/flow-php/etl/issues",
                 "source": "https://github.com/flow-php/etl/tree/1.x"
             },
-            "time": "2024-01-01T13:59:52+00:00"
+            "time": "2024-01-01T14:21:53+00:00"
         },
         {
             "name": "flow-php/etl-adapter-chartjs",
@@ -493,12 +493,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flow-php/etl-adapter-parquet.git",
-                "reference": "549086fb132064d20371fa337299d20c562562a7"
+                "reference": "d704698d1f4f0b557f8c98bab3f54dedb6a25df3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flow-php/etl-adapter-parquet/zipball/549086fb132064d20371fa337299d20c562562a7",
-                "reference": "549086fb132064d20371fa337299d20c562562a7",
+                "url": "https://api.github.com/repos/flow-php/etl-adapter-parquet/zipball/d704698d1f4f0b557f8c98bab3f54dedb6a25df3",
+                "reference": "d704698d1f4f0b557f8c98bab3f54dedb6a25df3",
                 "shasum": ""
             },
             "require": {
@@ -536,7 +536,7 @@
                 "issues": "https://github.com/flow-php/etl-adapter-parquet/issues",
                 "source": "https://github.com/flow-php/etl-adapter-parquet/tree/1.x"
             },
-            "time": "2023-12-31T21:07:06+00:00"
+            "time": "2024-01-01T14:21:50+00:00"
         },
         {
             "name": "flow-php/parquet",
