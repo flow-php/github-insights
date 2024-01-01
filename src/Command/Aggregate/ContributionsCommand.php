@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command\Aggregate;
 
-use App\DataWarehouse\Dataset\Contributions\Transformations\Contributions;
-use App\DataWarehouse\Paths;
+use App\DataMesh\Dataset\Contributions\Transformations\Contributions;
+use App\DataMesh\Paths;
 use Flow\ETL\Filesystem\SaveMode;
 use Flow\ETL\Join\Expression;
 use Flow\ETL\Row;

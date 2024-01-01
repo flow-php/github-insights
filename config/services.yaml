@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    data.warehouse.dir: "%kernel.project_dir%/var/data/warehouse/%kernel.environment%"
+    data.mesh.dir: "%kernel.project_dir%/var/data/mesh/%kernel.environment%"
     gh.token: "%env(GITHUB_TOKEN)%"
 
 services:
@@ -17,6 +17,6 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\DataWarehouse\Paths:
-        arguments: ['%data.warehouse.dir%']
+    App\DataMesh\Paths:
+        arguments: ['%data.mesh.dir%']
         public: true

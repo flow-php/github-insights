@@ -2,7 +2,7 @@
 
 namespace App\Command\Fetch;
 
-use App\DataWarehouse\Paths;
+use App\DataMesh\Paths;
 use App\Factory\GitHub\UserPublicEventsFactory;
 use Flow\ETL\Adapter\Http\PsrHttpClientDynamicExtractor;
 use Flow\ETL\Filesystem\SaveMode;

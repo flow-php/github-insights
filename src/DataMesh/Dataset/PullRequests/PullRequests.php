@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataWarehouse\Dataset\PullRequests;
+namespace App\DataMesh\Dataset\PullRequests;
 
-use App\DataWarehouse\Paths;
+use App\DataMesh\Paths;
 use Flow\ETL\{Function\Between\Boundary};
 
 use function Flow\ETL\Adapter\JSON\from_json;

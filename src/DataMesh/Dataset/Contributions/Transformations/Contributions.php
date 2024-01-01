@@ -1,11 +1,11 @@
 <?php
 
-namespace App\DataWarehouse\Dataset\Contributions\Transformations;
+namespace App\DataMesh\Dataset\Contributions\Transformations;
 
-use App\DataWarehouse\Dataset\Contributions\DataFrameFactory\ContributionsFactory;
-use App\DataWarehouse\Paths;
+use App\DataMesh\Dataset\Contributions\DataFrameFactory\ContributionsFactory;
+use App\DataMesh\Paths;
 use Flow\ETL\Join\Expression;
-use Flow\ETL\{DataFrame, Function\Between\Boundary, Partition, Transformation};
+use Flow\ETL\{DataFrame, Function\Between\Boundary, Transformation};
 
 use function Flow\ETL\DSL\{lit, not, ref};
 

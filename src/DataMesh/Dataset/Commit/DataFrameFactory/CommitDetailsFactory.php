@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataWarehouse\Dataset\Commit\DataFrameFactory;
+namespace App\DataMesh\Dataset\Commit\DataFrameFactory;
 
 use Flow\ETL\Adapter\Http\PsrHttpClientStaticExtractor;
 use Flow\ETL\{DataFrame, DataFrameFactory, Rows};
