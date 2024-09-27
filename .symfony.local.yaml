@@ -1,0 +1,3 @@
+proxy:
+    domains:
+        - "github-insights"

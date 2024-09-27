@@ -12,7 +12,7 @@ use function Flow\ETL\DSL\{df, ref};
 final class CommitDetailsFactory implements DataFrameFactory
 {
     public function __construct(
-        private readonly string $token
+        private readonly string $token,
     ) {
     }
 

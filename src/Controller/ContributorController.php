@@ -7,7 +7,7 @@ use App\DataMesh\Paths;
 use Flow\ETL\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 use function Flow\ETL\Adapter\ChartJS\{line_chart, to_chartjs_var};
 use function Flow\ETL\Adapter\CSV\from_csv;
