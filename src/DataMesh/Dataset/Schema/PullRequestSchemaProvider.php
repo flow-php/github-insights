@@ -20,7 +20,7 @@ final class PullRequestSchemaProvider
             str_schema('title'),
             struct_schema(
                 'user',
-                struct_type(
+                struct_type([
                     struct_element('login', type_string()),
                     struct_element('id', type_int()),
                     struct_element('node_id', type_string()),
@@ -28,7 +28,7 @@ final class PullRequestSchemaProvider
                     struct_element('url', type_string()),
                     struct_element('type', type_string()),
                     struct_element('site_admin', type_boolean()),
-                )
+                ])
             ),
             str_schema('body', nullable: true),
             datetime_schema('date_utc'),
@@ -39,15 +39,15 @@ final class PullRequestSchemaProvider
             list_schema(
                 'labels',
                 type_list(
-                    struct_type(
+                    struct_type([
                         struct_element('id', type_int()),
                         struct_element('node_id', type_string()),
                         struct_element('name', type_string()),
                         struct_element('color', type_string()),
                         struct_element('default', type_boolean()),
-                    )
+                    ]),
+                    nullable: true
                 ),
-                nullable: true
             ),
         );
     }

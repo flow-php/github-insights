@@ -32,7 +32,7 @@ class CommitsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
-        private readonly Paths $paths
+        private readonly Paths $paths,
     ) {
         if ('' === $token) {
             throw new \InvalidArgumentException('GitHub API Token must be provided.');
@@ -119,7 +119,7 @@ class CommitsCommand extends Command
                     Expression::on(['sha' => 'sha'], 'details_')
                 )
                 ->partitionBy(ref('date_utc'), ref('pr'))
-                ->write(to_json($this->paths->commit($org, $repository, Paths\Layer::RAW)))
+                ->write(to_json($this->paths->commit($org, $repository, Paths\Layer::RAW) . '/commits.json'))
                 // Execute
                 ->run();
         }

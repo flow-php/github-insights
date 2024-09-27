@@ -13,11 +13,11 @@ final class GenericUrlFactory implements NextRequestFactory
     public function __construct(
         private readonly string $token,
         private readonly string $apiUrl,
-        private readonly Psr17Factory $factory = new Psr17Factory()
+        private readonly Psr17Factory $factory = new Psr17Factory(),
     ) {
     }
 
-    public function create(Message\ResponseInterface $previousResponse = null): ?Message\RequestInterface
+    public function create(?Message\ResponseInterface $previousResponse = null): ?Message\RequestInterface
     {
         if ($previousResponse instanceof Message\ResponseInterface) {
             if (false === $previousResponse->hasHeader('link')) {

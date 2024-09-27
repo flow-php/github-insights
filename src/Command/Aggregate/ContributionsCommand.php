@@ -57,7 +57,7 @@ final class ContributionsCommand extends Command
 
         // Create a list of top contributors
         data_frame()
-            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*'))
+            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*.json'))
             ->transform(new Contributions($year, $org, $repository, $this->paths))
             ->groupBy(ref('user_login'))
             ->aggregate(

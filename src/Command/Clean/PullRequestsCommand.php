@@ -66,8 +66,10 @@ final class PullRequestsCommand extends Command
             return Command::FAILURE;
         }
 
+        $io->note("Cleaning pull requests from {$org}/{$repository} created after {$afterDate->format(\DATE_ATOM)} and before {$beforeDate->format(\DATE_ATOM)}");
+
         df()
-            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*'))
+            ->read(from_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/date_utc=*/*.json'))
             ->filterPartitions(
                 ref('date_utc')->cast('date')->between(lit($afterDate), lit($beforeDate), Boundary::INCLUSIVE)
             )
@@ -85,7 +87,7 @@ final class PullRequestsCommand extends Command
             ->validate($schema = (new PullRequestSchemaProvider())->clean())
             ->partitionBy(ref('date_utc'))
             ->mode(overwrite())
-            ->write(to_parquet($this->paths->pullRequests($org, $repository, Paths\Layer::CLEAN), schema: $schema))
+            ->write(to_parquet($this->paths->pullRequests($org, $repository, Paths\Layer::CLEAN) . '/pull-requests.parquet', schema: $schema))
             ->run();
 
         return Command::SUCCESS;

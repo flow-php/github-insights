@@ -13,7 +13,7 @@ final class TopContributors
     public function __construct(
         private readonly string $org,
         private readonly string $repository,
-        private readonly Paths $paths
+        private readonly Paths $paths,
     ) {
     }
 

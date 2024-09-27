@@ -65,22 +65,22 @@ final class CommitsCommand extends Command
             return Command::FAILURE;
         }
 
+        $io->note("Cleaning commits from {$org}/{$repository} created after {$afterDate->format(\DATE_ATOM)} and before {$beforeDate->format(\DATE_ATOM)}");
+
         df()
-            ->read(from_json($this->paths->commit($org, $repository, Paths\Layer::RAW) . '/date_utc=*/pr=*/*'))
+            ->read(from_json($this->paths->commit($org, $repository, Paths\Layer::RAW) . '/date_utc=*/pr=*/*.json'))
             ->filterPartitions(
                 ref('date_utc')->cast('date')->between(lit($afterDate), lit($beforeDate), Boundary::INCLUSIVE)
             )
             ->select('sha', 'node_id', 'pr', 'details_stats', 'author', 'date_utc')
-            ->withEntry('details_stats', structure_ref('details_stats')->select('total', 'additions', 'deletions'))
             ->withEntry('author', structure_ref('author')->select('login', 'id', 'node_id', 'avatar_url', 'type'))
             ->withEntry('date_utc', ref('date_utc')->cast('date'))
             // Remove commits from Bots
             ->filter(ref('author')->arrayGet('type')->equals(lit('User')))
-            ->collect()
             ->validate($schema = (new CommitSchemaProvider())->clean())
             ->partitionBy(ref('date_utc'))
             ->mode(overwrite())
-            ->write(to_parquet($this->paths->commit($org, $repository, Paths\Layer::CLEAN), schema: $schema))
+            ->write(to_parquet($this->paths->commit($org, $repository, Paths\Layer::CLEAN) . '/commits.parquet', schema: $schema))
             ->run();
 
         return Command::SUCCESS;

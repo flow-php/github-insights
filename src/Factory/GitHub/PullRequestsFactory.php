@@ -15,11 +15,11 @@ final class PullRequestsFactory implements NextRequestFactory
         private readonly string $org,
         private readonly string $repository,
         private readonly string $state = 'closed',
-        private readonly Psr17Factory $factory = new Psr17Factory()
+        private readonly Psr17Factory $factory = new Psr17Factory(),
     ) {
     }
 
-    public function create(Message\ResponseInterface $previousResponse = null): ?Message\RequestInterface
+    public function create(?Message\ResponseInterface $previousResponse = null): ?Message\RequestInterface
     {
         if ($previousResponse instanceof Message\ResponseInterface) {
             if (false === $previousResponse->hasHeader('link')) {

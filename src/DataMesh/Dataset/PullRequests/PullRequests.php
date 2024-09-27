@@ -20,7 +20,7 @@ final class PullRequests
     public function between(\DateTimeInterface $afterDate, \DateTimeInterface $beforeDate): \Generator
     {
         return df()
-            ->read(from_json($this->paths->pullRequests($this->org, $this->repository, Paths\Layer::RAW) . '/date_utc=*/*'))
+            ->read(from_json($this->paths->pullRequests($this->org, $this->repository, Paths\Layer::RAW) . '/date_utc=*/*.json'))
             ->filterPartitions(
                 ref('date_utc')->cast('date')->between(lit($afterDate), lit($beforeDate), Boundary::INCLUSIVE)
             )

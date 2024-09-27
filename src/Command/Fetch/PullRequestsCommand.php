@@ -30,7 +30,7 @@ class PullRequestsCommand extends Command
 {
     public function __construct(
         private readonly string $token,
-        private readonly Paths $paths
+        private readonly Paths $paths,
     ) {
         if ('' === $token) {
             throw new \InvalidArgumentException('GitHub API Token must be provided.');
@@ -101,7 +101,7 @@ class PullRequestsCommand extends Command
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(to_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW)))
+            ->write(to_json($this->paths->pullRequests($org, $repository, Paths\Layer::RAW) . '/pull-requests.json'))
             // Execute
             ->run();
         $progressIndicator->finish('Pull requests fetched!');

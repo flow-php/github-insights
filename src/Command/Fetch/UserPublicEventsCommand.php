@@ -97,9 +97,10 @@ class UserPublicEventsCommand extends Command
             // Save with overwrite, partition files per unified date
             ->mode(SaveMode::Overwrite)
             ->partitionBy(ref('date_utc'))
-            ->write(to_json($this->paths->userEvents($username, Paths\Layer::RAW)))
+            ->write(to_json($this->paths->userEvents($username, Paths\Layer::RAW) . '/user-events.json'))
             // Execute
             ->run();
+
         $progressIndicator->finish('User public events fetched!');
 
         $stopwatch->stop($this->getName());

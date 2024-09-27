@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\DataMesh\Paths;
+use Flow\Filesystem\Path\Filter\KeepAll;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{BinaryFileResponse, Response, ResponseHeaderBag};
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 use function Flow\ETL\Adapter\CSV\from_csv;
-use function Flow\ETL\DSL\{df, lit, local_files, not, ref};
+use function Flow\ETL\DSL\{df, files, lit, not, ref, type_int};
 
 class RepoController extends AbstractController
 {
@@ -23,10 +24,11 @@ class RepoController extends AbstractController
             'org' => $org,
             'repo' => $repo,
             'years' => df()
-                ->read(local_files($this->paths->reports($org, $repo, Paths\Layer::RAW)))
+                ->read(files($this->paths->reports($org, $repo, Paths\Layer::RAW) . '/*')->withPathFilter(new KeepAll()))
                 ->filter(ref('is_dir')->equals(lit(true)))
                 ->filter(not(ref('file_name')->isIn(lit(['.', '..']))))
                 ->select('file_name')
+                ->withEntry('file_name', ref('file_name')->cast(type_int()))
                 ->collect()
                 ->fetch()
                 ->reduceToArray(ref('file_name')),
