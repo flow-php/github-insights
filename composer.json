@@ -29,7 +29,7 @@
         "symfony/stopwatch": "6.4.*",
         "symfony/templating": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
-        "symfony/yaml": "6.4.*",
+        "symfony/yaml": "7.2.*",
         "twig/extra-bundle": "^3.0",
         "twig/twig": "^3.8"
     },
